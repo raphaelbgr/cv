@@ -48,8 +48,8 @@
       background: var(--paper-2);
       color: var(--ink);
       font-family: var(--body);
-      font-size: 10.4pt;
-      line-height: 1.45;
+      font-size: 9.4pt;
+      line-height: 1.42;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       font-feature-settings: "ss01", "ss02", "cv11";
@@ -129,7 +129,7 @@
     h1.name {
       font-family: var(--display);
       font-variation-settings: "opsz" 144, "wght" 600;
-      font-size: 56pt;
+      font-size: 42pt;
       line-height: 0.92;
       letter-spacing: -0.025em;
       margin: 0;
@@ -232,7 +232,7 @@
        SECTIONS — numbered editorial headings
        ───────────────────────────────────────────────────────── */
     section {
-      margin-top: 26px;
+      margin-top: 18px;
     }
 
     .section-head {
@@ -292,10 +292,11 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 4px;
-      page-break-inside: avoid;
-      break-inside: avoid;
+      orphans: 3;
+      widows: 3;
     }
-    .role + .role { margin-top: 18px; }
+    .role-head, .role-meta { page-break-after: avoid; break-after: avoid; }
+    .role + .role { margin-top: 11px; }
 
     .role-head {
       display: grid;
@@ -656,7 +657,7 @@
       }
       .page:last-child { page-break-after: auto; }
       a { color: inherit; }
-      .role, .project, .umbrella { break-inside: avoid; page-break-inside: avoid; }
+      .project { break-inside: avoid; page-break-inside: avoid; }
       .section-head { break-after: avoid; page-break-after: avoid; }
     }
 
@@ -976,8 +977,8 @@
 
     <div class="colophon">
       <span class="mark">R · B · G · R</span>
-      <span>Page 1 / 2</span>
-      <span>Continued overleaf</span>
+      <span>Curriculum Vitæ · 2026</span>
+      <span>Continued →</span>
     </div>
   </article>
 
@@ -1216,7 +1217,7 @@
     <div class="colophon">
       <span class="mark">R · B · G · R</span>
       <span>Set in Fraunces &amp; IBM Plex · 2026</span>
-      <span>Page 2 / 2</span>
+      <span>End</span>
     </div>
   </article>
 </body>

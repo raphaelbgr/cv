@@ -38,7 +38,7 @@ foreach ($v in $variants) {
     "--print-to-pdf=$pdf" `
     $url 2>&1 | Out-Null
   $size = (Get-Item $pdf).Length
-  Write-Host "  -> $pdf  ({0:N0} bytes)" -f $size -ForegroundColor Green
+  Write-Host ("  -> {0}  ({1:N0} bytes)" -f $pdf, $size) -ForegroundColor Green
 }
 
 Write-Host ""
