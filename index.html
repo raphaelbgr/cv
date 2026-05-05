@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raphael Bernardo — CV Index · Senior Android & Streaming Engineer</title>
+  <meta name="description" content="Four role-targeted CV variants — pick the one that matches the role archetype: balanced default, streaming specialist, FAANG-mobile, or platform architect." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --paper:       #FAF7F1;
+      --paper-2:     #F2EDE3;
+      --ink:         #16130E;
+      --ink-2:       #3B362E;
+      --mute:        #7A7367;
+      --rule:        #D9D1C2;
+      --rule-soft:   #E8E1D2;
+      --accent:      #A8261C;
+      --accent-deep: #7E1B14;
+      --accent-soft: #F2DCD7;
+
+      --display: "Fraunces", "Times New Roman", Georgia, serif;
+      --body:    "IBM Plex Sans", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+      --mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper-2);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "ss01", "ss02", "cv11";
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 56px 32px 96px;
+      position: relative;
+      background: var(--paper);
+      min-height: 100vh;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.025 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      background-blend-mode: multiply;
+    }
+
+    /* Masthead */
+    .masthead {
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--ink);
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .masthead::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 92px;
+      height: 4px;
+      background: var(--accent);
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .eyebrow .vol { color: var(--accent); font-weight: 600; }
+    .eyebrow .sep { width: 1px; height: 12px; background: var(--rule); }
+
+    h1 {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 144, "wght" 700;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin: 0 0 16px;
+      color: var(--ink);
+    }
+    h1 .given {
+      display: block;
+      font-variation-settings: "opsz" 144, "wght" 400;
+      font-style: italic;
+      color: var(--ink-2);
+      font-size: 0.55em;
+    }
+    .lede {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 30, "wght" 500;
+      font-size: clamp(18px, 2.4vw, 22px);
+      line-height: 1.45;
+      color: var(--ink-2);
+      max-width: 64ch;
+      margin: 0;
+    }
+    .lede em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* Section heads */
+    .section-head {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      align-items: baseline;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+      margin: 56px 0 28px;
+    }
+    .section-head .num {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: .14em;
+    }
+    .section-head h2 {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 36, "wght" 600;
+      font-size: 28px;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--ink);
+    }
+    .section-head .kicker {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      grid-column: 2;
+      margin-top: 4px;
+    }
+
+    /* Variant cards */
+    .variants {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 720px) {
+      .variants { grid-template-columns: 1fr; }
+      .page { padding: 32px 20px 64px; }
+    }
+
+    .variant {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 24px 24px 22px;
+      position: relative;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .variant:hover {
+      transform: translateY(-2px);
+      border-color: var(--ink);
+      box-shadow: 0 12px 28px rgba(20, 16, 10, .08);
+    }
+    .variant.featured {
+      border-left: 3px solid var(--accent);
+      background: linear-gradient(180deg, rgba(168, 38, 28, 0.035), rgba(168, 38, 28, 0));
+    }
+    .variant.featured::before {
+      content: "DEFAULT";
+      position: absolute;
+      top: -8px;
+      left: 18px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .26em;
+      color: var(--accent);
+      background: var(--paper);
+      padding: 0 8px;
+    }
+
+    .variant .label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 6px;
+    }
+    .variant h3 {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 36, "wght" 600;
+      font-size: 22px;
+      letter-spacing: -0.005em;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .variant .tagline {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 14.5px;
+      color: var(--accent);
+      margin: 0 0 14px;
+      line-height: 1.4;
+    }
+    .variant p.use-when {
+      font-size: 13.5px;
+      color: var(--ink-2);
+      margin: 0 0 18px;
+      line-height: 1.55;
+    }
+    .variant p.use-when strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 8px 14px 7px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      text-decoration: none;
+      transition: background .2s ease, color .2s ease;
+    }
+    .btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+    .btn.secondary:hover {
+      color: var(--paper);
+      background: var(--ink-2);
+      border-color: var(--ink-2);
+    }
+    .btn .arrow {
+      display: inline-block;
+      margin-left: 6px;
+      transition: transform .2s ease;
+    }
+    .btn:hover .arrow { transform: translateX(3px); }
+
+    /* How-to-use note */
+    .howto {
+      margin-top: 56px;
+      padding: 22px 26px;
+      border: 1px solid var(--rule);
+      background: var(--paper-2);
+    }
+    .howto h4 {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 12px;
+    }
+    .howto p {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.6;
+    }
+    .howto p:last-child { margin-bottom: 0; }
+    .howto code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: var(--paper);
+      padding: 1px 6px;
+      border: 1px solid var(--rule);
+      color: var(--ink);
+    }
+
+    /* Footer */
+    .colophon {
+      margin-top: 64px;
+      padding-top: 16px;
+      border-top: 1px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--mute);
+      position: relative;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .colophon::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: -1px;
+      width: 92px;
+      height: 4px;
+      background: var(--accent);
+    }
+    .colophon a {
+      color: var(--mute);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .colophon a:hover { color: var(--accent); border-color: var(--accent); }
+    .colophon .mark {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Contact strip */
+    .contact-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      margin-top: 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .04em;
+      color: var(--ink-2);
+    }
+    .contact-strip a {
+      color: var(--ink-2);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .contact-strip a:hover { color: var(--accent); border-color: var(--accent); }
+    .contact-strip .label {
+      color: var(--mute);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="eyebrow">
+        <span class="vol">Vol. X</span>
+        <span class="sep"></span>
+        <span>Curriculum Vitæ — Index</span>
+        <span class="sep"></span>
+        <span>2026 Edition</span>
+      </div>
+      <h1>
+        <span class="given">Raphael</span>
+        Bernardo
+      </h1>
+      <p class="lede">
+        Four role-targeted CV variants. Pick the one that matches the
+        <em>archetype of the role</em> you're applying to. Each variant is
+        available as a <em>designed HTML page</em> for human reviewers and as a
+        <em>plain Markdown source</em> for ATS upload boxes.
+      </p>
+      <div class="contact-strip">
+        <span><span class="label">Loc</span>Rio de Janeiro · GMT&minus;3</span>
+        <span><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></span>
+        <span><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></span>
+        <span><span class="label">In</span><a href="https://www.linkedin.com/in/raphaelbgr/">linkedin.com/in/raphaelbgr</a></span>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <span class="num">§ 01</span>
+        <h2>Choose Your Edition</h2>
+        <span class="kicker">Same Facts · Different Positioning</span>
+      </div>
+
+      <div class="variants">
+
+        <article class="variant featured">
+          <div class="label">Edition · 01 / Balanced</div>
+          <h3>Default</h3>
+          <p class="tagline">Senior Android Engineer · Ex-Uber · Streaming Platform Architect</p>
+          <p class="use-when">
+            Use as the <strong>generic primary CV</strong> — recruiter introductions,
+            portfolio site, when the target archetype isn't clear yet, or when the
+            job spans multiple categories.
+          </p>
+          <div class="actions">
+            <a class="btn" href="default/">Open HTML <span class="arrow">→</span></a>
+            <a class="btn secondary" href="default/cv.md">Markdown source</a>
+          </div>
+        </article>
+
+        <article class="variant">
+          <div class="label">Edition · 02</div>
+          <h3>Streaming Specialist</h3>
+          <p class="tagline">Senior Streaming Engineer · OTT/CTV · Android TV &amp; Fire OS</p>
+          <p class="use-when">
+            Use for <strong>streaming &amp; CTV companies</strong>: Roku, FuboTV,
+            Pluto TV, Disney+, Hulu, Tubi, Netflix Streaming team, Sling, Plex,
+            Sky, BBC iPlayer. Leads with OTT framework + multi-DRM credentials;
+            skills grid foregrounds Streaming · Media.
+          </p>
+          <div class="actions">
+            <a class="btn" href="streaming/">Open HTML <span class="arrow">→</span></a>
+            <a class="btn secondary" href="streaming/cv.md">Markdown source</a>
+          </div>
+        </article>
+
+        <article class="variant">
+          <div class="label">Edition · 03</div>
+          <h3>FAANG-Mobile / Ex-Uber</h3>
+          <p class="tagline">Senior Android Engineer · Ex-Uber · Native (JNI/C++) · Kotlin</p>
+          <p class="use-when">
+            Use for <strong>FAANG-mobile and brand-led recruiting</strong>: Google,
+            Meta, Amazon (mobile org), Apple, Uber, Airbnb, Stripe, etc. Leads
+            with Maps SDK / native (JNI/C++) and broad senior Android signal;
+            "Ex-Uber" sits in the tagline for max recruiter recall.
+          </p>
+          <div class="actions">
+            <a class="btn" href="faang/">Open HTML <span class="arrow">→</span></a>
+            <a class="btn secondary" href="faang/cv.md">Markdown source</a>
+          </div>
+        </article>
+
+        <article class="variant">
+          <div class="label">Edition · 04</div>
+          <h3>Platform Architect</h3>
+          <p class="tagline">Streaming Platform Architect · Multi-platform · Kotlin Multiplatform</p>
+          <p class="use-when">
+            Use for <strong>Staff / Principal IC roles</strong> and architecture-led
+            postings. Foregrounds Clean Architecture, multi-platform (Android,
+            Fire OS, webOS, Tizen) and Kotlin Multiplatform; skills grid leads
+            with Architecture group.
+          </p>
+          <div class="actions">
+            <a class="btn" href="architect/">Open HTML <span class="arrow">→</span></a>
+            <a class="btn secondary" href="architect/cv.md">Markdown source</a>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="howto">
+        <h4>How to Use</h4>
+        <p>
+          The <strong>HTML</strong> versions render as a designed two-page A4 layout — open in
+          Chrome, then <code>Ctrl+P</code> &rarr; <em>Save as PDF</em>, with margins set to <em>None</em>
+          (the page has its own A4 margins built in). Send the resulting PDF to recruiters and
+          hiring managers.
+        </p>
+        <p>
+          The <strong>Markdown</strong> versions are plain text optimised for ATS parsers — paste
+          into Workday, Greenhouse, LinkedIn Easy Apply, and similar online application forms
+          where free-form text upload is required. Identical content, no styling that confuses
+          embedding-based ranking.
+        </p>
+        <p>
+          The keyword surface across all four variants reflects a 2026 JD-coverage audit against
+          live senior streaming/CTV postings — see <a href="jd-coverage-audit.md"><code>jd-coverage-audit.md</code></a>
+          for the full analysis.
+        </p>
+      </div>
+    </section>
+
+    <div class="colophon">
+      <span class="mark">R · B · G · R</span>
+      <span>Set in Fraunces &amp; IBM Plex · 2026</span>
+      <span><a href="jd-coverage-audit.md">JD Coverage Audit</a></span>
+    </div>
+  </main>
+</body>
+</html>

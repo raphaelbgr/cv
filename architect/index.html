@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raphael Bernardo — Streaming Platform Architect · Multi-platform · Kotlin Multiplatform</title>
+  <meta name="description" content="Streaming platform architect. Designs broadcast-grade frameworks across Android TV, Fire OS, webOS & Tizen. Clean Architecture, Kotlin Multiplatform, multi-DRM, native C++." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ─────────────────────────────────────────────────────────
+       PALETTE & TOKENS
+       Editorial broadcast: warm paper, ink, sparing news-red.
+       ───────────────────────────────────────────────────────── */
+    :root {
+      --paper:       #FAF7F1;
+      --paper-2:     #F2EDE3;
+      --ink:         #16130E;
+      --ink-2:       #3B362E;
+      --mute:        #7A7367;
+      --rule:        #D9D1C2;
+      --rule-soft:   #E8E1D2;
+      --accent:      #A8261C;
+      --accent-deep: #7E1B14;
+      --accent-soft: #F2DCD7;
+
+      --display: "Fraunces", "Times New Roman", Georgia, serif;
+      --body:    "IBM Plex Sans", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+      --mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+      --page-w: 210mm;
+      --page-h: 297mm;
+      --pad-x:  18mm;
+      --pad-y:  16mm;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper-2);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 10.4pt;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "ss01", "ss02", "cv11";
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    body {
+      padding: 24px 16px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* Subtle paper grain via SVG noise — keeps it editorial, not flat */
+    .page {
+      position: relative;
+      width: var(--page-w);
+      min-height: var(--page-h);
+      background: var(--paper);
+      box-shadow: 0 1px 2px rgba(20, 16, 10, .06),
+                  0 14px 40px rgba(20, 16, 10, .08);
+      padding: var(--pad-y) var(--pad-x);
+      overflow: hidden;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.025 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      background-blend-mode: multiply;
+    }
+
+    .page + .page { margin-top: 14px; }
+
+    /* ─────────────────────────────────────────────────────────
+       MASTHEAD
+       Big serif name, monospace eyebrow, quiet contact strip.
+       ───────────────────────────────────────────────────────── */
+    .masthead {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: end;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--ink);
+      position: relative;
+    }
+    .masthead::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 92px;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 8.4pt;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .eyebrow .vol {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .eyebrow .sep {
+      width: 1px;
+      height: 11px;
+      background: var(--rule);
+    }
+
+    h1.name {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 144, "wght" 600;
+      font-size: 56pt;
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--ink);
+    }
+    h1.name .given {
+      display: block;
+      font-variation-settings: "opsz" 144, "wght" 400;
+      font-style: italic;
+      color: var(--ink-2);
+    }
+    h1.name .family {
+      display: block;
+      font-variation-settings: "opsz" 144, "wght" 700;
+    }
+
+    .role-line {
+      margin-top: 10px;
+      font-family: var(--display);
+      font-variation-settings: "opsz" 36, "wght" 500;
+      font-size: 13pt;
+      letter-spacing: -0.005em;
+      color: var(--ink-2);
+    }
+    .role-line em {
+      font-style: italic;
+      color: var(--accent);
+      font-variation-settings: "opsz" 36, "wght" 500;
+    }
+
+    .contact {
+      text-align: right;
+      font-size: 9.4pt;
+      color: var(--ink-2);
+      line-height: 1.65;
+      font-feature-settings: "tnum";
+    }
+    .contact a {
+      color: var(--ink-2);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .contact a:hover { color: var(--accent); border-color: var(--accent); }
+    .contact .label {
+      font-family: var(--mono);
+      font-size: 7.6pt;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-right: 8px;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       SECTIONS — numbered editorial headings
+       ───────────────────────────────────────────────────────── */
+    section {
+      margin-top: 26px;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      align-items: baseline;
+      gap: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 16px;
+    }
+    .section-head .num {
+      font-family: var(--mono);
+      font-size: 9pt;
+      color: var(--accent);
+      letter-spacing: .14em;
+    }
+    .section-head h2 {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 36, "wght" 600;
+      font-size: 16pt;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--ink);
+    }
+    .section-head .kicker {
+      font-family: var(--mono);
+      font-size: 7.8pt;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      grid-column: 2;
+      margin-top: 2px;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       SUMMARY
+       ───────────────────────────────────────────────────────── */
+    .summary p {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 24, "wght" 400;
+      font-size: 12.8pt;
+      line-height: 1.45;
+      color: var(--ink-2);
+      max-width: 64ch;
+      margin: 0;
+    }
+    .summary p strong {
+      font-variation-settings: "opsz" 24, "wght" 600;
+      color: var(--ink);
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       EXPERIENCE
+       ───────────────────────────────────────────────────────── */
+    .role {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .role + .role { margin-top: 18px; }
+
+    .role-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .role-head .company {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 30, "wght" 600;
+      font-size: 12.6pt;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+    }
+    .role-head .company a {
+      color: inherit;
+      text-decoration: none;
+      background-image: linear-gradient(var(--accent), var(--accent));
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      background-size: 0 1px;
+      transition: background-size .25s ease;
+    }
+    .role-head .company a:hover { background-size: 100% 1px; }
+    .role-head .dates {
+      font-family: var(--mono);
+      font-size: 8.6pt;
+      letter-spacing: .08em;
+      color: var(--ink-2);
+      white-space: nowrap;
+    }
+    .role-head .dates .duration {
+      color: var(--mute);
+      margin-left: 6px;
+    }
+
+    .role-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      font-size: 9.6pt;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+    }
+    .role-meta .title {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .role-meta .meta-sep {
+      color: var(--rule);
+    }
+    .role-meta .badge {
+      font-family: var(--mono);
+      font-size: 7.4pt;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 2px 7px 1px;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      color: var(--mute);
+      background: var(--paper-2);
+    }
+    .role-meta .badge.primary {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .role ul {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 0;
+    }
+    .role ul li {
+      position: relative;
+      padding-left: 14px;
+      margin: 3px 0;
+      color: var(--ink-2);
+    }
+    .role ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 6px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .role ul li strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .stack {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 6px;
+    }
+    .stack span {
+      font-family: var(--mono);
+      font-size: 7.8pt;
+      letter-spacing: .03em;
+      color: var(--ink-2);
+      padding: 2px 7px 1px;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, .35);
+    }
+
+    /* Umbrella card — visually unifies the concurrent-contracts era */
+    .umbrella {
+      position: relative;
+      padding: 18px 18px 16px 22px;
+      background: linear-gradient(180deg, rgba(168, 38, 28, 0.035), rgba(168, 38, 28, 0));
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent);
+      border-radius: 2px;
+      margin-bottom: 22px;
+    }
+    .umbrella::before {
+      content: "UMBRELLA";
+      position: absolute;
+      top: -8px;
+      left: 18px;
+      font-family: var(--mono);
+      font-size: 7pt;
+      letter-spacing: .26em;
+      color: var(--accent);
+      background: var(--paper);
+      padding: 0 8px;
+    }
+    .umbrella-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      gap: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--rule);
+      margin-bottom: 14px;
+    }
+    .umbrella-head .firm {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 30, "wght" 700;
+      font-size: 13.6pt;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+    }
+    .umbrella-head .firm-sub {
+      font-family: var(--body);
+      font-weight: 500;
+      font-size: 9.6pt;
+      color: var(--ink-2);
+      margin-top: 2px;
+    }
+    .umbrella-head .firm-cnpj {
+      font-family: var(--mono);
+      font-size: 7.6pt;
+      letter-spacing: .12em;
+      color: var(--mute);
+      margin-top: 4px;
+    }
+    .umbrella-head .firm-dates {
+      font-family: var(--mono);
+      font-size: 8.6pt;
+      letter-spacing: .08em;
+      color: var(--ink);
+      white-space: nowrap;
+      text-align: right;
+    }
+    .umbrella-blurb {
+      font-size: 9.8pt;
+      color: var(--ink-2);
+      max-width: 70ch;
+      margin: 0 0 14px;
+    }
+
+    .umbrella .role {
+      position: relative;
+      padding-left: 14px;
+    }
+    .umbrella .role::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--rule);
+    }
+    .umbrella .role + .role {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dotted var(--rule);
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       PRIOR ROLES — terser
+       ───────────────────────────────────────────────────────── */
+    .prior .role-head .company {
+      font-size: 11.6pt;
+      font-variation-settings: "opsz" 24, "wght" 600;
+    }
+    .prior .role + .role { margin-top: 12px; }
+    .prior .role ul li { margin: 2px 0; font-size: 9.8pt; }
+
+    /* ─────────────────────────────────────────────────────────
+       PROJECTS GRID
+       ───────────────────────────────────────────────────────── */
+    .projects {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+    }
+    .project {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .project h3 {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 24, "wght" 600;
+      font-size: 11.4pt;
+      margin: 0 0 2px;
+      color: var(--ink);
+    }
+    .project h3 a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .project h3 a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .project .lede {
+      font-size: 9.6pt;
+      color: var(--ink-2);
+      margin: 0 0 5px;
+    }
+    .project .stack {
+      margin-top: 4px;
+    }
+    .project .stack span {
+      font-size: 7.4pt;
+      padding: 1px 6px 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       EDUCATION
+       ───────────────────────────────────────────────────────── */
+    .education-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      padding: 6px 0;
+      align-items: baseline;
+    }
+    .education-row + .education-row {
+      border-top: 1px solid var(--rule-soft);
+    }
+    .education-row .school {
+      font-family: var(--display);
+      font-variation-settings: "opsz" 24, "wght" 600;
+      font-size: 11.2pt;
+      color: var(--ink);
+    }
+    .education-row .degree {
+      font-size: 9.8pt;
+      color: var(--ink-2);
+    }
+    .education-row .when {
+      font-family: var(--mono);
+      font-size: 8.4pt;
+      letter-spacing: .08em;
+      color: var(--mute);
+      white-space: nowrap;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       SKILLS — categorised tag grid
+       ───────────────────────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 10px 18px;
+      align-items: baseline;
+    }
+    .skills-grid + .skills-grid { margin-top: 4px; }
+    .skills-grid .group {
+      font-family: var(--mono);
+      font-size: 7.8pt;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-top: 3px;
+    }
+    .skills-grid .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 6px;
+    }
+    .skills-grid .tags span {
+      font-family: var(--mono);
+      font-size: 7.8pt;
+      color: var(--ink-2);
+      padding: 2px 7px 1px;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, .4);
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       FOOTER (printed colophon)
+       ───────────────────────────────────────────────────────── */
+    .colophon {
+      margin-top: 28px;
+      padding-top: 12px;
+      border-top: 1px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 7.6pt;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--mute);
+      position: relative;
+    }
+    .colophon::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: -1px;
+      width: 92px;
+      height: 4px;
+      background: var(--accent);
+    }
+    .colophon .mark {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       PRINT STYLES — A4, lock colors, avoid awkward breaks
+       ───────────────────────────────────────────────────────── */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    @media print {
+      html, body { background: var(--paper); }
+      body { padding: 0; gap: 0; }
+      .page {
+        box-shadow: none;
+        margin: 0;
+        page-break-after: always;
+      }
+      .page:last-child { page-break-after: auto; }
+      a { color: inherit; }
+      .role, .project, .umbrella { break-inside: avoid; page-break-inside: avoid; }
+      .section-head { break-after: avoid; page-break-after: avoid; }
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       SCREEN: small viewports — readable but not optimized for mobile
+       The CV is designed for A4 print/PDF; on small screens we
+       keep it scaled down rather than reflow into a mobile layout.
+       ───────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .page {
+        transform-origin: top center;
+        transform: scale(.94);
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <!-- ════════════ MASTHEAD ════════════ -->
+    <header class="masthead">
+      <div>
+        <div class="eyebrow">
+          <span class="vol">Vol. X</span>
+          <span class="sep"></span>
+          <span>Curriculum Vitæ</span>
+          <span class="sep"></span>
+          <span>2026 Edition</span>
+        </div>
+        <h1 class="name">
+          <span class="given">Raphael</span>
+          <span class="family">Bernardo</span>
+        </h1>
+        <p class="role-line">
+          Streaming Platform Architect · <em>Multi-platform · KMP · Clean Architecture</em><br />
+          Designs broadcast-grade frameworks powering 50+ TV brands across Android TV, Fire OS, webOS &amp; Tizen.
+        </p>
+      </div>
+      <address class="contact">
+        <div><span class="label">Loc</span>Rio de Janeiro · GMT&minus;3</div>
+        <div><span class="label">Cit</span>Brazilian / Portuguese</div>
+        <div><span class="label">Tel</span>+55 21 98885&#8209;6697</div>
+        <div><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></div>
+        <div><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></div>
+        <div><span class="label">In</span><a href="https://www.linkedin.com/in/raphaelbgr/">linkedin.com/in/raphaelbgr</a></div>
+      </address>
+    </header>
+
+    <!-- ════════════ 01 SUMMARY ════════════ -->
+    <section class="summary">
+      <div class="section-head">
+        <span class="num">§ 01</span>
+        <h2>Summary</h2>
+        <span class="kicker">Profile · Positioning</span>
+      </div>
+      <p>
+        <strong>Senior engineer and platform architect specialising in connected-TV streaming systems.</strong>
+        Ten-plus years architecting cross-platform media frameworks at broadcast scale —
+        including the OTT framework powering 50+ Nexstar TV brands, a Kotlin Multiplatform
+        data layer consumed across Android, Fire OS, webOS &amp; Tizen, plugin-based
+        third-party integration systems, and JNI/C++ work on Uber's Maps SDK. I operate as
+        an independent contractor through my own consultancy <strong>RBGR Consultoria em TI</strong>,
+        which is why several engagements appear in parallel below — at any given time only
+        one engagement is full-time, with the rest as part-time contracts running concurrently.
+      </p>
+    </section>
+
+    <!-- ════════════ 02 EXPERIENCE ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 02</span>
+        <h2>Experience</h2>
+        <span class="kicker">Engagements · 2014 → Present</span>
+      </div>
+
+      <!-- ─── UMBRELLA: RBGR Consultoria em TI ─── -->
+      <div class="umbrella">
+        <div class="umbrella-head">
+          <div>
+            <div class="firm">RBGR Consultoria em TI</div>
+            <div class="firm-sub">Independent Android / Connected-TV Engineer · Brazil PJ</div>
+            <div class="firm-cnpj">CNPJ 32.248.987 / 0001&#8209;54 · Simples Nacional EPP</div>
+          </div>
+          <div class="firm-dates">
+            Mar 2021 — Present<br />
+            <span style="color: var(--mute);">5+ yrs · 4 client engagements</span>
+          </div>
+        </div>
+        <p class="umbrella-blurb">
+          Sole-engineer consultancy serving OTT / CTV streaming and media clients in the US
+          and Brazil. Engagements are explicitly labelled by commitment level (full-time,
+          long-term part-time, or concurrent part-time) — only one engagement at a time
+          runs as full-time, in line with the standard Brazilian PJ contractor pattern.
+        </p>
+
+        <!-- Nexstar -->
+        <div class="role">
+          <div class="role-head">
+            <div class="company"><a href="https://www.nexstar.tv/">Nexstar Media Group, Inc.</a></div>
+            <div class="dates">Aug 2025 — Present<span class="duration">· current</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Senior Fire OS / Android TV Engineer</span>
+            <span class="meta-sep">·</span>
+            <span>via Nimble.LA · full remote</span>
+            <span class="badge primary">Full-time contract</span>
+          </div>
+          <ul>
+            <li>Architected an enterprise <strong>OTT streaming framework</strong> powering <strong>50+ TV station brands</strong> across Fire TV and Android TV using <strong>MVVM + Clean Architecture</strong> with a plugin-based integration layer for third-party services.</li>
+            <li>Built five specialised <strong>Media3 / ExoPlayer</strong> implementations covering VOD, live, and audio playback with HLS adaptive bitrate.</li>
+            <li>Shipped DRM-protected playback (<strong>Widevine, PlayReady, FairPlay</strong>) with both server-side and client-side ad insertion.</li>
+            <li>Integrated <strong>12+ analytics platforms</strong> (Adobe Analytics, mParticle, Nielsen DCR, ComScore, Permutive, BlueConic) under GDPR / CCPA compliance.</li>
+            <li>Delivered TV-optimised authentication: device-based passwordless, magic link, and QR-code login; entitlement checking and flexible paywall integration.</li>
+            <li>Enabled zero-downtime feature rollouts across <strong>50+ product flavors</strong> via remote configuration; built TV UI on Android Leanback with full d-pad navigation.</li>
+            <li>Refactored callback chains to reactive Kotlin <strong>SharedFlow</strong>; resolved background-audio lifecycle issues and lifecycle-aware leaks in fragment navigation.</li>
+            <li>Wired <strong>Firebase Crashlytics + New Relic</strong> for crash and performance monitoring; coverage with JUnit, Mockk, Robolectric, Espresso.</li>
+          </ul>
+          <div class="stack">
+            <span>Kotlin</span><span>Coroutines / Flow</span><span>Media3 / ExoPlayer</span>
+            <span>Dagger 2</span><span>Retrofit2</span><span>Moshi</span><span>Glide</span>
+            <span>Android Leanback</span><span>Jetpack (Nav, ViewModel, Room)</span>
+            <span>Firebase</span><span>Google IMA</span><span>Adobe Marketing SDK</span>
+            <span>mParticle</span><span>Nielsen</span><span>ComScore</span>
+            <span>New Relic</span><span>Mux Analytics</span>
+            <span>JUnit · Mockk · Espresso</span>
+          </div>
+        </div>
+
+        <!-- FreeCast -->
+        <div class="role">
+          <div class="role-head">
+            <div class="company"><a href="https://freecast.com/">FreeCast, Inc.</a></div>
+            <div class="dates">Mar 2021 — Jul 2025<span class="duration">· 4 yrs 5 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Android / Android TV / Fire OS Engineer</span>
+            <span class="meta-sep">·</span>
+            <span>full remote</span>
+            <span class="badge">Long-term part-time contract</span>
+          </div>
+          <ul>
+            <li>Led the <strong>full migration of the legacy Java codebase to Kotlin</strong>; introduced Use-Case + Clean Architecture and improved end-user UX.</li>
+            <li>Implemented <strong>HLS / DASH</strong> playback for <strong>live linear TV and VOD</strong> with Widevine DRM-protected streaming; integrated Google Cast and a paid subscription gateway.</li>
+            <li>Maintained and developed companion apps on <strong>webOS and Tizen</strong> alongside the Android TV / Fire OS surfaces.</li>
+            <li>Integrated <strong>OTA tuner platforms</strong> (HDHomeRun, AirTV, Alticast, PDAQ) with GStreamer-based media pipelines for secure live broadcast over HLS / DASH.</li>
+            <li>Owned <strong>DRM, EPG, tuner orchestration, transcoding</strong>, and multi-device streaming end-to-end.</li>
+            <li>Shipped on Google Play (<em>Select TV Android</em>, <em>FreeCast Watch</em>) and Amazon (<em>FreeCast Watch Fire OS</em>).</li>
+          </ul>
+          <div class="stack">
+            <span>Kotlin</span><span>Jetpack Compose</span><span>Hilt</span>
+            <span>Coroutines / Flow</span><span>Media3</span><span>Room · DataStore</span>
+            <span>Retrofit2</span><span>Picasso</span>
+            <span>Firebase Analytics · Crashlytics · FCM</span>
+            <span>Mixpanel</span><span>webOS · Tizen</span>
+            <span>HDHomeRun · AirTV · Alticast · PDAQ</span>
+            <span>GStreamer</span><span>Widevine DRM</span>
+          </div>
+        </div>
+
+        <!-- ClaroTV+ (concurrent) -->
+        <div class="role">
+          <div class="role-head">
+            <div class="company"><a href="https://www.clarotvmais.com.br/">Claro TV+</a></div>
+            <div class="dates">Apr 2024 — Dec 2024<span class="duration">· 9 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Android TV / Fire OS Engineer</span>
+            <span class="meta-sep">·</span>
+            <span>full remote</span>
+            <span class="badge">Concurrent part-time contract</span>
+          </div>
+          <ul>
+            <li>Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators; <strong>4K streaming</strong> via DASH / HLS with multi-DRM.</li>
+            <li>Architected the data layer as a shared <strong>Kotlin Multiplatform (KMP)</strong> submodule consumed by Android, webOS and Tizen clients.</li>
+            <li>Multi-module <strong>MVVM</strong> architecture; Media3 playback; analytics across Firebase + Google Analytics 4.</li>
+          </ul>
+          <div class="stack">
+            <span>Kotlin Multiplatform (KMP)</span><span>Kotlin</span>
+            <span>Jetpack Navigation · ViewModel · Room</span>
+            <span>Hilt</span><span>Media3</span><span>Coroutines / Flow</span>
+            <span>Firebase + GA4</span><span>webOS · Tizen</span>
+          </div>
+        </div>
+
+        <!-- Uber (concurrent) -->
+        <div class="role">
+          <div class="role-head">
+            <div class="company"><a href="https://www.uber.com/">Uber Technologies</a></div>
+            <div class="dates">May 2021 — May 2022<span class="duration">· 1 yr</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Android Engineer · Maps SDK team</span>
+            <span class="meta-sep">·</span>
+            <span>via Matchpoint Solutions · full remote</span>
+            <span class="badge">Concurrent part-time contract</span>
+          </div>
+          <ul>
+            <li>Worked on the <strong>Maps team SDK</strong> module — JNI/C++ bindings between Uber's native Maps engine and the Android client.</li>
+            <li>Contributed to Uber's open-source Android architecture framework (<strong>RIBs</strong>); shipped to Uber Rider, Uber Eats and Uber Driver.</li>
+            <li>Operated inside a 10K+ engineer codebase using <strong>Buck, Flipper</strong>, custom analytics / logger / crash reporter and a feature-by-module architecture.</li>
+          </ul>
+          <div class="stack">
+            <span>Java · Kotlin</span><span>C++ · NDK · JNI</span>
+            <span>Groovy</span><span>Python · SQL</span>
+            <span>RIBs</span><span>Buck</span><span>CMake</span><span>Flipper</span>
+            <span>Firebase</span>
+          </div>
+        </div>
+      </div>
+      <!-- ─── /UMBRELLA ─── -->
+
+      <!-- Prior W-2 / CLT roles -->
+      <div class="prior">
+        <div class="role">
+          <div class="role-head">
+            <div class="company">Invillia</div>
+            <div class="dates">Apr 2020 — Aug 2020<span class="duration">· 5 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Android Engineer</span>
+            <span class="meta-sep">·</span>
+            <span>full remote</span>
+            <span class="badge">Part-time contract</span>
+          </div>
+          <ul>
+            <li>Re-modelled the home page of <strong>Casas Bahia</strong> and <strong>Pontofrio</strong> — converted a static product shelf into a fully dynamic, backend-driven shelf system.</li>
+            <li>Implemented end-to-end analytics tracking for product clicks and shelf scroll-depth via Firebase Analytics and custom API calls.</li>
+          </ul>
+          <div class="stack">
+            <span>Kotlin</span><span>MVVM</span><span>Dagger 2</span>
+            <span>LiveData</span><span>Retrofit2</span><span>Picasso</span>
+            <span>Firebase (Analytics · FCM · Remote Config · Crashlytics)</span>
+            <span>Jenkins CI/CD</span>
+          </div>
+        </div>
+
+        <div class="role">
+          <div class="role-head">
+            <div class="company">Super Revendedores</div>
+            <div class="dates">Oct 2018 — Feb 2021<span class="duration">· 2 yrs 5 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Android Engineer</span>
+            <span class="meta-sep">·</span>
+            <span>full remote</span>
+          </div>
+          <ul>
+            <li>Migrated the full codebase from Java to Kotlin; implemented <strong>online payment gateway</strong>, virtual showcases and an SSO link to a partner web ordering portal.</li>
+            <li>Built scalable asynchronous order processing on <strong>AWS SQS / SNS</strong> for reliable queuing and notification delivery.</li>
+          </ul>
+          <div class="stack">
+            <span>Kotlin</span><span>AWS (SQS · SNS · Storage)</span>
+            <span>Firebase (Firestore · Auth · Remote Config · IAM · FCM)</span>
+            <span>Facebook OAuth</span><span>DbFlow</span><span>Dagger 2</span>
+            <span>MVP</span><span>Retrofit2</span>
+          </div>
+        </div>
+
+        <div class="role">
+          <div class="role-head">
+            <div class="company">Concrete · an Accenture Company</div>
+            <div class="dates">Dec 2016 — Oct 2018<span class="duration">· 1 yr 11 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Jr. Android Engineer</span>
+          </div>
+          <ul>
+            <li>Built the <strong>Minha CVC</strong> travel app from scratch — <strong>1M+ downloads</strong>; shop geolocation directing customers to physical stores; itinerary feature reducing customer-service call volume.</li>
+            <li>Worked on <strong>Getnet</strong>; migrated MVP to MVVM; introduced RxJava2 and LiveData.</li>
+          </ul>
+          <div class="stack">
+            <span>Java 8</span><span>Kotlin</span><span>RxJava2 · LiveData</span>
+            <span>MVP → MVVM</span><span>Dagger 2</span>
+            <span>Google Maps API</span><span>Retrofit2 · Picasso</span>
+            <span>Firebase</span><span>Jenkins CI/CD</span>
+          </div>
+        </div>
+
+        <div class="role">
+          <div class="role-head">
+            <div class="company">PraPagar (fintech)</div>
+            <div class="dates">Jun 2015 — Dec 2016<span class="duration">· 1 yr 7 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Jr. Android Engineer</span>
+            <span class="meta-sep">·</span>
+            <span>collaborating with US team (MaxxPotential)</span>
+          </div>
+          <ul>
+            <li>Built mobile payments via <strong>QR code and geolocation</strong>; first Android + Laravel REST experience.</li>
+          </ul>
+          <div class="stack">
+            <span>Android</span><span>PHP · Laravel 5</span>
+            <span>REST</span><span>OOP · Design Patterns</span>
+          </div>
+        </div>
+
+        <div class="role">
+          <div class="role-head">
+            <div class="company">FASOLTI · Fábrica de Soluções em TI</div>
+            <div class="dates">Sep 2014 — Jan 2015<span class="duration">· 5 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Test Developer</span>
+            <span class="meta-sep">·</span>
+            <span class="badge">Internship</span>
+          </div>
+          <ul>
+            <li>Documented and implemented automated test cases in <strong>Selenium with TestNG</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="role">
+          <div class="role-head">
+            <div class="company"><a href="https://www.ibm.com/">IBM Brasil</a></div>
+            <div class="dates">Jun 2014 — Dec 2014<span class="duration">· 6 mo</span></div>
+          </div>
+          <div class="role-meta">
+            <span class="title">Software Engineering Intern</span>
+            <span class="meta-sep">·</span>
+            <span>Rio de Janeiro · while pursuing B.S. at Instituto Infnet</span>
+          </div>
+          <ul>
+            <li>Wrote <strong>SQL queries against IBM DB2</strong> in support of contract and sales teams; produced reporting spreadsheets and Hyperion-based BI artefacts.</li>
+            <li>Documented internal processes via SharePoint; first professional exposure to enterprise databases, REST APIs, and Agile workflows.</li>
+          </ul>
+          <div class="stack">
+            <span>IBM DB2</span><span>SQL</span><span>IBM Hyperion</span>
+            <span>SharePoint</span><span>Python</span>
+            <span>REST APIs</span><span>Git</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="colophon">
+      <span class="mark">R · B · G · R</span>
+      <span>Page 1 / 2</span>
+      <span>Continued overleaf</span>
+    </div>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════
+       PAGE 2 — Projects · Education · Stack
+       ════════════════════════════════════════════════════════ -->
+  <article class="page">
+    <header class="masthead" style="grid-template-columns: 1fr auto;">
+      <div>
+        <div class="eyebrow">
+          <span class="vol">Vol. X</span>
+          <span class="sep"></span>
+          <span>Curriculum Vitæ</span>
+          <span class="sep"></span>
+          <span>Continued</span>
+        </div>
+        <h1 class="name" style="font-size: 30pt;">
+          <span class="family">Raphael Bernardo</span>
+        </h1>
+      </div>
+      <address class="contact">
+        <div><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></div>
+        <div><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></div>
+      </address>
+    </header>
+
+    <!-- ════════════ 03 PROJECTS ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 03</span>
+        <h2>Selected Personal Work</h2>
+        <span class="kicker">Independent · Open Source · Research</span>
+      </div>
+
+      <div class="projects">
+        <div class="project">
+          <h3><a href="https://ispeakpdf.com">iSpeakPDF</a></h3>
+          <p class="lede">
+            Privacy-by-design web platform converting PDFs to natural-sounding audio
+            entirely in-browser via WebAssembly + Web Workers — no document leaves the
+            device. WCAG-aligned UI, on-device neural TTS with sentence chunking,
+            OCR fallback for scans, subscription tiers and usage limits.
+          </p>
+          <div class="stack">
+            <span>Next.js · React</span><span>TypeScript</span>
+            <span>WebAssembly · Web Workers</span><span>PDF.js</span>
+            <span>WebGPU</span><span>Supabase</span><span>Stripe</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3><a href="https://play.google.com/store/apps/details?id=br.com.raphaelbgr.preoscerveja">Beer Price Calculator</a></h3>
+          <p class="lede">
+            Android app to find the best beer value (price / ml) with history,
+            mini line / bar / pie / heat-map insights, PT&nbsp;/&nbsp;EN localisation,
+            Play Billing subscriptions and coupon-based unlocks. Published on the
+            Play Store.
+          </p>
+          <div class="stack">
+            <span>Kotlin</span><span>Jetpack Compose</span><span>Hilt</span>
+            <span>Room</span><span>Coroutines / Flow</span>
+            <span>Play Billing</span><span>Material 3</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3><a href="https://github.com/raphaelbgr/keyspace-explorer-web">Bitcoin Keyspace Explorer</a></h3>
+          <p class="lede">
+            Educational web app for navigating the Bitcoin private-keyspace —
+            BigInt page jumps, P2PKH / P2WPKH / P2SH-P2WPKH / P2TR derivations,
+            real-time balance queries against a Postgres cache, virtualised lists,
+            background scanning sessions with Telegram notifications.
+          </p>
+          <div class="stack">
+            <span>Next.js 14</span><span>TypeScript</span>
+            <span>PostgreSQL</span><span>Node.js APIs</span><span>MUI</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3><a href="https://github.com/raphaelbgr/BTC-Multipool-Cache-Miner">Custom BTC Cache Miner</a></h3>
+          <p class="lede">
+            Research-grade multi-pool Bitcoin SHA-256d <strong>CUDA</strong> miner that
+            tests the same nonce across concurrent Stratum and GBT sources with safe
+            hot-swaps and a VRAM cache (~85% utilisation, dedup, adaptive watermarks).
+            CPU double-SHA-256 verify, crash-safe outbox.
+          </p>
+          <div class="stack">
+            <span>C++ · CUDA</span><span>CMake</span>
+            <span>nlohmann::json</span><span>OpenSSL</span>
+            <span>Windows · Linux</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ 04 EDUCATION ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 04</span>
+        <h2>Education</h2>
+        <span class="kicker">Formal · Continuing</span>
+      </div>
+
+      <div class="education-row">
+        <div>
+          <div class="school">Instituto Infnet · Rio de Janeiro</div>
+          <div class="degree">B.S. Computer Engineering — software development, mathematical modelling, OS &amp; hardware architecture.</div>
+        </div>
+        <div class="when">2013 — 2018</div>
+      </div>
+
+      <div class="education-row">
+        <div>
+          <div class="school">Chiswick House School (Malta)</div>
+          <div class="degree">K-12 / High School Diploma.</div>
+        </div>
+        <div class="when">1997 — 2005</div>
+      </div>
+
+      <div class="education-row">
+        <div>
+          <div class="school">Orion Consulting · Rio de Janeiro</div>
+          <div class="degree">Java fundamentals — OOP, software design, code patterns and logic.</div>
+        </div>
+        <div class="when">2010</div>
+      </div>
+    </section>
+
+    <!-- ════════════ 05 STACK ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 05</span>
+        <h2>Technical Stack</h2>
+        <span class="kicker">Reference · ATS Index</span>
+      </div>
+
+      <div class="skills-grid">
+        <div class="group">Architecture</div>
+        <div class="tags">
+          <span>MVVM</span><span>MVI</span><span>Unidirectional Data Flow</span>
+          <span>Clean Architecture</span><span>Use Case</span>
+          <span>Multi-module</span><span>RIBs</span><span>MVP</span>
+          <span>Plugin-based integration</span>
+        </div>
+
+        <div class="group">Mobile / TV</div>
+        <div class="tags">
+          <span>Android SDK</span><span>Android TV</span><span>Fire OS</span>
+          <span>webOS</span><span>Tizen</span>
+          <span>Android Leanback</span>
+          <span>Jetpack Compose</span><span>Compose for TV</span>
+          <span>Kotlin Multiplatform (KMP)</span>
+          <span>NDK · JNI</span>
+        </div>
+
+        <div class="group">Streaming · Media</div>
+        <div class="tags">
+          <span>OTT</span><span>CTV (Connected TV)</span>
+          <span>Linear TV</span><span>VOD</span><span>Live Streaming</span>
+          <span>Media3 / ExoPlayer</span><span>MediaCodec</span>
+          <span>HLS</span><span>LL-HLS</span><span>DASH</span><span>CMAF</span>
+          <span>H.264 / AVC</span><span>HEVC / H.265</span><span>HDR10+</span><span>AAC</span>
+          <span>Hardware-accelerated decoding</span>
+          <span>Widevine</span><span>PlayReady</span><span>FairPlay</span>
+          <span>Google IMA SDK</span><span>SSAI · CSAI</span>
+          <span>GStreamer</span><span>HDHomeRun · AirTV · Alticast · PDAQ</span>
+        </div>
+
+        <div class="group">Languages</div>
+        <div class="tags">
+          <span>Kotlin</span><span>Java</span><span>C++</span><span>TypeScript</span>
+          <span>JavaScript</span><span>Python</span><span>Groovy</span>
+          <span>SQL</span><span>PHP (Laravel)</span>
+        </div>
+
+        <div class="group">Jetpack · Reactive</div>
+        <div class="tags">
+          <span>Coroutines · Flow</span><span>SharedFlow · StateFlow</span>
+          <span>LiveData</span><span>ViewModel · Navigation</span>
+          <span>Room · DataStore</span><span>Hilt · Dagger 2</span>
+          <span>RxJava2</span>
+        </div>
+
+        <div class="group">Cloud · Backend</div>
+        <div class="tags">
+          <span>Firebase (Analytics · Crashlytics · FCM · Auth · Firestore · Remote Config · IAM)</span>
+          <span>AWS (SQS · SNS · Storage)</span>
+          <span>Supabase</span><span>PostgreSQL</span>
+          <span>REST APIs</span><span>Retrofit2 · Moshi</span>
+        </div>
+
+        <div class="group">Analytics</div>
+        <div class="tags">
+          <span>Adobe Analytics</span><span>Adobe Marketing SDK</span>
+          <span>mParticle</span><span>Nielsen DCR</span><span>ComScore</span>
+          <span>Permutive</span><span>BlueConic</span>
+          <span>New Relic</span><span>Mux</span><span>Mixpanel</span>
+          <span>Google Analytics 4</span>
+        </div>
+
+        <div class="group">Testing · Build</div>
+        <div class="tags">
+          <span>JUnit</span><span>Mockk</span><span>Robolectric</span>
+          <span>Espresso</span><span>Paparazzi (screenshot)</span>
+          <span>Turbine (Flow testing)</span><span>Selenium · TestNG</span>
+          <span>Buck</span><span>Gradle</span><span>CMake</span>
+          <span>Jenkins CI/CD</span><span>Flipper</span>
+        </div>
+
+        <div class="group">Performance · Observability</div>
+        <div class="tags">
+          <span>Quality of Experience (QoE)</span>
+          <span>Time-to-First-Frame (TTFF)</span>
+          <span>Rebuffering rate</span>
+          <span>Startup-time optimisation</span>
+          <span>Systrace</span><span>Perfetto</span>
+          <span>Android Profiler</span>
+        </div>
+
+        <div class="group">Compliance · Accessibility</div>
+        <div class="tags">
+          <span>GDPR</span><span>CCPA</span>
+          <span>WCAG 2.2</span><span>TalkBack · d-pad focus order</span>
+          <span>DRM &amp; Content Security</span>
+          <span>OAuth · SSO</span>
+        </div>
+
+        <div class="group">Languages (spoken)</div>
+        <div class="tags">
+          <span>Portuguese (native)</span><span>English (fluent)</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="colophon">
+      <span class="mark">R · B · G · R</span>
+      <span>Set in Fraunces &amp; IBM Plex · 2026</span>
+      <span>Page 2 / 2</span>
+    </div>
+  </article>
+</body>
+</html>
