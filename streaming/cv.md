@@ -3,7 +3,8 @@
 **Senior Streaming Engineer · OTT · CTV · Android TV & Fire OS**
 Architect of an OTT framework powering 50+ broadcast brands — 4K multi-DRM, live linear TV & VOD playback at scale.
 
-Rio de Janeiro, Brazil (GMT-3) · Brazilian / Portuguese (EU) citizenship
+Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
+Languages: Portuguese (native), English (fluent)
 +55 (21) 98885-6697 · raphaelbgr@gmail.com
 github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 

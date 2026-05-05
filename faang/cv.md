@@ -3,7 +3,8 @@
 **Senior Android Engineer · Ex-Uber · Native (JNI/C++) · Kotlin**
 A decade across Uber Maps SDK, Architecture, Jetpack Compose & broadcast-grade streaming at scale.
 
-Rio de Janeiro, Brazil (GMT-3) · Brazilian / Portuguese (EU) citizenship
+Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
+Languages: Portuguese (native), English (fluent)
 +55 (21) 98885-6697 · raphaelbgr@gmail.com
 github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 

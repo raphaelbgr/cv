@@ -3,7 +3,8 @@
 **Senior Android Engineer · Ex-Uber**
 Architect of a streaming framework powering 50+ TV brands — native (JNI/C++), TV & multi-DRM expertise.
 
-Rio de Janeiro, Brazil (GMT-3) · Brazilian / Portuguese (EU) citizenship
+Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
+Languages: Portuguese (native), English (fluent)
 +55 (21) 98885-6697 · raphaelbgr@gmail.com
 github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
