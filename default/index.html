@@ -292,10 +292,9 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 4px;
-      orphans: 3;
-      widows: 3;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
-    .role-head, .role-meta { page-break-after: avoid; break-after: avoid; }
     .role + .role { margin-top: 11px; }
 
     .role-head {
@@ -657,7 +656,7 @@
       }
       .page:last-child { page-break-after: auto; }
       a { color: inherit; }
-      .project { break-inside: avoid; page-break-inside: avoid; }
+      .role, .project { break-inside: avoid; page-break-inside: avoid; }
       .section-head { break-after: avoid; page-break-after: avoid; }
     }
 
@@ -755,10 +754,8 @@
             <li>Built five specialised <strong>Media3 / ExoPlayer</strong> implementations covering VOD, live, and audio playback with HLS adaptive bitrate.</li>
             <li>Shipped DRM-protected playback (<strong>Widevine, PlayReady, FairPlay</strong>) with both server-side and client-side ad insertion.</li>
             <li>Integrated <strong>12+ analytics platforms</strong> (Adobe Analytics, mParticle, Nielsen DCR, ComScore, Permutive, BlueConic) under GDPR / CCPA compliance.</li>
-            <li>Delivered TV-optimised authentication: device-based passwordless, magic link, and QR-code login; entitlement checking and flexible paywall integration.</li>
-            <li>Enabled zero-downtime feature rollouts across <strong>50+ product flavors</strong> via remote configuration; built TV UI on Android Leanback with full d-pad navigation.</li>
-            <li>Refactored callback chains to reactive Kotlin <strong>SharedFlow</strong>; resolved background-audio lifecycle issues and lifecycle-aware leaks in fragment navigation.</li>
-            <li>Wired <strong>Firebase Crashlytics + New Relic</strong> for crash and performance monitoring; coverage with JUnit, Mockk, Robolectric, Espresso.</li>
+            <li>Delivered TV-optimised auth (passwordless, magic link, QR-code), entitlement &amp; flexible paywall, and zero-downtime feature rollouts across <strong>50+ product flavors</strong> via remote config; built Leanback TV UI with full d-pad navigation.</li>
+            <li>Refactored callback chains to reactive Kotlin <strong>SharedFlow</strong>; resolved fragment-lifecycle leaks; wired <strong>Firebase Crashlytics + New Relic</strong> with JUnit, Mockk, Robolectric, Espresso coverage.</li>
           </ul>
           <div class="stack">
             <span>Kotlin</span><span>Coroutines / Flow</span><span>Media3 / ExoPlayer</span>
