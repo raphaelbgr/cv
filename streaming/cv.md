@@ -13,20 +13,13 @@ github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
 Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT / CTV streaming frameworks, and broadcast-grade DRM. Ten-plus years shipping production apps across Android, Android TV, Fire OS, webOS and Tizen — including an OTT streaming framework powering 50+ broadcast brands and 4K multi-DRM playback (Widevine, PlayReady, FairPlay).
 
-I operate as an independent contractor through my own Brazilian consultancy, **RBGR Consultoria em TI** (CNPJ 32.248.987/0001-54). At any given time only one engagement is full-time; the rest are part-time contracts running concurrently — explicitly labelled below as full-time, long-term part-time, or concurrent part-time. This is the standard pattern for Brazilian PJ contractors operating through a legal entity.
+As an independent contractor I run multiple client engagements in parallel — at any given time only one is full-time, with the rest as part-time concurrent contracts (each engagement is explicitly labelled below as full-time, long-term part-time, or concurrent part-time).
 
 ---
 
 ## Professional Experience
 
-### RBGR Consultoria em TI — Independent Android / OTT / Connected-TV Engineer
-**Mar 2021 – Present (5+ years) · Brazil PJ · CNPJ 32.248.987/0001-54**
-
-Sole-engineer consultancy serving OTT / CTV streaming and media clients in the US and Brazil. Each engagement is labelled by commitment level — only one engagement at a time runs as full-time.
-
----
-
-#### Nexstar Media Group, Inc. — Senior Fire OS / Android TV Engineer
+### Nexstar Media Group, Inc. — Senior Fire OS / Android TV Engineer
 **Aug 2025 – Present · Full-time contract via Nimble.LA · Full Remote**
 
 OTT streaming platform framework powering 50+ TV station brands for Nexstar Digital across Fire TV and Android TV.
@@ -47,7 +40,7 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ---
 
-#### FreeCast, Inc. — Android / Android TV / Fire OS Engineer
+### FreeCast, Inc. — Android / Android TV / Fire OS Engineer
 **Mar 2021 – Jul 2025 (4 yrs 5 mo) · Long-term part-time contract · Full Remote**
 
 - Led the full migration of the legacy Java codebase to Kotlin; introduced Use-Case + Clean Architecture and improved end-user UX.
@@ -62,7 +55,7 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ---
 
-#### Claro TV+ — Android TV / Fire OS Engineer
+### Claro TV+ — Android TV / Fire OS Engineer
 **Apr 2024 – Dec 2024 (9 mo) · Concurrent part-time contract · Full Remote**
 
 - Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators.
@@ -74,7 +67,7 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ---
 
-#### Uber Technologies — Android Engineer, Maps SDK team
+### Uber Technologies — Android Engineer, Maps SDK team
 **May 2021 – May 2022 (1 yr) · Concurrent part-time contract via Matchpoint Solutions · Full Remote**
 
 - Worked on the Maps team SDK module developed with JNI / C++.
