@@ -146,6 +146,18 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ## Selected Personal Projects
 
+### Arquive — github.com/raphaelbgr/arquive
+Self-hosted personal media archive and streaming server. In-browser HLS playback with GPU-accelerated transcoding cache, IPTV (M3U + XMLTV EPG + recording), DLNA/UPnP for smart TVs, distributed GPU-fleet transcoding, FAISS-backed face recognition, local-AI captions via Ollama, plus a native Apple TV (SwiftUI) client.
+**Stack:** Python, React, HLS, GPU Transcoding, FAISS, InsightFace, Ollama (Qwen2.5-VL), DLNA, M3U/XMLTV, SwiftUI tvOS, JWT.
+
+### DynamicMusicApp — github.com/raphaelbgr/dynamic-music-app-showcase
+Android music player with three pluggable design systems users switch at runtime — Material You (Google), Neon Wave (synthwave), and Organic Flow (botanical). One Compose codebase, three radically different visual identities — design-system theming treated as a first-class architectural concern.
+**Stack:** Kotlin, Jetpack Compose, Material 3, MVI, Coroutines / Flow, Hilt.
+
+### Multi-Agent Course Creator — github.com/raphaelbgr/multi-agent-course-creator
+Reference implementation of a multi-agent AI system using Google ADK + Agent-to-Agent (A2A) protocol, deployed on Cloud Run. Four specialised LLM agents in a Researcher → Judge → Content Builder pipeline with session-state propagation, structured Pydantic outputs, and authenticated inter-agent communication.
+**Stack:** Python, Google ADK, A2A Protocol, Pydantic, Google Cloud Run, LLM Orchestration.
+
 ### iSpeakPDF — https://ispeakpdf.com
 Privacy-by-design web platform converting PDFs to natural-sounding audio entirely in-browser via WebAssembly + Web Workers — no document leaves the device. WCAG-aligned UI with full keyboard navigation and ARIA semantics; on-device neural TTS with sentence chunking and voice selection; OCR fallback for scanned PDFs; subscription tiers and usage limits.
 **Stack:** Next.js, React, TypeScript, WebAssembly, Web Workers, PDF.js, WebGPU, Supabase, Stripe, Vercel.
@@ -153,10 +165,6 @@ Privacy-by-design web platform converting PDFs to natural-sounding audio entirel
 ### Beer Price Calculator — Google Play (br.com.raphaelbgr.preoscerveja)
 Android app to find the best beer value (price per ml) with history, line / bar / pie / heat-map insights, PT / EN localisation, light / dark / system theming, Play Billing subscriptions and coupon-based unlocks. Published on the Play Store.
 **Stack:** Kotlin, Jetpack Compose, Hilt, Room, Coroutines / Flow, Play Billing, Unity Ads, Material 3.
-
-### Bitcoin Keyspace Explorer — github.com/raphaelbgr/keyspace-explorer-web
-Educational web app for navigating the Bitcoin private-keyspace — BigInt page jumps, P2PKH / P2WPKH / P2SH-P2WPKH / P2TR derivations, real-time balance queries against a Postgres cache, virtualised lists, background scanning sessions with Telegram notifications, dark / light themes, i18n.
-**Stack:** Next.js 14, TypeScript, PostgreSQL, Node.js APIs, Material UI.
 
 ### Custom BTC Cache Miner — github.com/raphaelbgr/BTC-Multipool-Cache-Miner
 Research-grade multi-pool Bitcoin SHA-256d CUDA miner that tests the same nonce across concurrent Stratum and GBT sources with safe hot-swaps and a VRAM cache (~85% utilisation, dedup, adaptive watermarks / guards). CUDA engine with job-indexed grid and short micro-batches; CPU double-SHA-256 verify; crash-safe outbox.
