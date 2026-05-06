@@ -154,21 +154,13 @@ Self-hosted personal media archive and streaming server. In-browser HLS playback
 Android music player with three pluggable design systems users switch at runtime — Material You (Google), Neon Wave (synthwave), and Organic Flow (botanical). One Compose codebase, three radically different visual identities — design-system theming treated as a first-class architectural concern.
 **Stack:** Kotlin, Jetpack Compose, Material 3, MVI, Coroutines / Flow, Hilt.
 
-### Multi-Agent Course Creator — github.com/raphaelbgr/multi-agent-course-creator
-Reference implementation of a multi-agent AI system using Google ADK + Agent-to-Agent (A2A) protocol, deployed on Cloud Run. Four specialised LLM agents in a Researcher → Judge → Content Builder pipeline with session-state propagation, structured Pydantic outputs, and authenticated inter-agent communication.
-**Stack:** Python, Google ADK, A2A Protocol, Pydantic, Google Cloud Run, LLM Orchestration.
+### Socials Automator — github.com/raphaelbgr/Socials-Automator
+End-to-end Instagram carousel generator — AI writes the captions, AI generates the images, then auto-posts. Live at @ai.for.mortals. Runs on 100% local AI (LM Studio + ComfyUI) at zero cost, with cloud fallback (Z.AI, OpenAI, Groq, Gemini, fal.ai). Smart slide-count selection, post-history awareness, scheduled loop mode.
+**Stack:** Python, LM Studio, ComfyUI, Stable Diffusion, Z.AI / OpenAI / Groq / Gemini APIs, Instagram Graph API, Cloudinary.
 
-### iSpeakPDF — https://ispeakpdf.com
-Privacy-by-design web platform converting PDFs to natural-sounding audio entirely in-browser via WebAssembly + Web Workers — no document leaves the device. WCAG-aligned UI with full keyboard navigation and ARIA semantics; on-device neural TTS with sentence chunking and voice selection; OCR fallback for scanned PDFs; subscription tiers and usage limits.
-**Stack:** Next.js, React, TypeScript, WebAssembly, Web Workers, PDF.js, WebGPU, Supabase, Stripe, Vercel.
-
-### Beer Price Calculator — Google Play (br.com.raphaelbgr.preoscerveja)
-Android app to find the best beer value (price per ml) with history, line / bar / pie / heat-map insights, PT / EN localisation, light / dark / system theming, Play Billing subscriptions and coupon-based unlocks. Published on the Play Store.
-**Stack:** Kotlin, Jetpack Compose, Hilt, Room, Coroutines / Flow, Play Billing, Unity Ads, Material 3.
-
-### Custom BTC Cache Miner — github.com/raphaelbgr/BTC-Multipool-Cache-Miner
-Research-grade multi-pool Bitcoin SHA-256d CUDA miner that tests the same nonce across concurrent Stratum and GBT sources with safe hot-swaps and a VRAM cache (~85% utilisation, dedup, adaptive watermarks / guards). CUDA engine with job-indexed grid and short micro-batches; CPU double-SHA-256 verify; crash-safe outbox.
-**Stack:** C++, CUDA, CMake, nlohmann::json, OpenSSL, Windows, Linux.
+### Infinite Research — github.com/raphaelbgr/IntiniteResearch
+Autonomous AI research system that refines documents through infinite self-learning iterations. Agno agents orchestrate 1–10 parallel DuckDuckGo searches per iteration; each pass evolves search terms and patches identified gaps. Local LLMs via LMStudio, vector-DB RAG over prior refinements, SQLite versioning, graceful shutdown.
+**Stack:** Python, Agno Agents, LMStudio (local LLM), RAG / Vector DB, DuckDuckGo Search, SQLite.
 
 ---
 
