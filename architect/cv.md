@@ -12,7 +12,7 @@ github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
 ## Summary
 
-Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT / CTV streaming frameworks, and broadcast-grade DRM. Ten-plus years shipping production apps across Android, Android TV, Fire OS, webOS and Tizen — including an OTT streaming framework powering 50+ broadcast brands and 4K multi-DRM playback (Widevine, PlayReady, FairPlay).
+Streaming platform architect with ten-plus years designing broadcast-grade frameworks across Android TV, Fire OS, webOS and Tizen. Architect of a multi-tenant OTT streaming framework powering 50+ broadcast brands — owns Clean Architecture, multi-module design, Kotlin Multiplatform shared data layer, multi-DRM (Widevine, PlayReady, FairPlay), SSAI/CSAI, QoE observability, and plugin-based third-party integration. Led architecture reviews and build-vs-buy decisions across five Media3 / ExoPlayer implementations; JNI/C++ native layer experience from Uber Maps SDK (RIBs, 10K+ engineer codebase).
 
 As an independent contractor I run multiple client engagements in parallel — at any given time only one is full-time, with the rest as part-time concurrent contracts (each engagement is explicitly labelled below as full-time, long-term part-time, or concurrent part-time).
 
