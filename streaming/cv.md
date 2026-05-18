@@ -12,7 +12,7 @@ github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
 ## Summary
 
-Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT / CTV streaming frameworks, and broadcast-grade DRM. Ten-plus years shipping production apps across Android, Android TV, Fire OS, webOS and Tizen — including an OTT streaming framework powering 50+ broadcast brands and 4K multi-DRM playback (Widevine, PlayReady, FairPlay).
+Senior streaming engineer specialising in OTT / CTV platforms. Ten-plus years shipping production media apps across Android TV, Fire OS, webOS and Tizen — including a multi-tenant OTT streaming framework powering 50+ broadcast brands at petabyte-scale viewership, with 4K multi-DRM playback (Widevine, PlayReady, FairPlay), live linear TV and VOD pipelines, SSAI/CSAI, and Quality of Experience (QoE) observability end-to-end. Shared Kotlin Multiplatform data layer across four TV platforms; GStreamer-based OTA tuner pipelines (HDHomeRun, AirTV, Alticast, PDAQ); five specialised Media3 / ExoPlayer implementations.
 
 As an independent contractor I run multiple client engagements in parallel — at any given time only one is full-time, with the rest as part-time concurrent contracts (each engagement is explicitly labelled below as full-time, long-term part-time, or concurrent part-time).
 
@@ -183,7 +183,7 @@ Java fundamentals: object-oriented programming, software design, code patterns a
 
 **Mobile / TV Platforms:** Android SDK, Android TV, Fire OS, webOS, Tizen, Android Leanback, Jetpack Compose, Compose for TV, Kotlin Multiplatform (KMP), NDK, JNI.
 
-**Streaming & Media:** OTT, CTV (Connected TV), Linear TV, VOD, Live Streaming, Media3 / ExoPlayer, MediaCodec, HLS, LL-HLS, DASH, CMAF, H.264 / AVC, HEVC / H.265, HDR10+, AAC, Hardware-accelerated decoding, Widevine DRM, PlayReady, FairPlay, Google IMA SDK, Server-Side Ad Insertion (SSAI), Client-Side Ad Insertion (CSAI), GStreamer, HDHomeRun, AirTV, Alticast, PDAQ.
+**Streaming & Media:** OTT, CTV (Connected TV), Linear TV, VOD, Live Streaming, Media3 / ExoPlayer, MediaCodec, HLS, LL-HLS, DASH, CMAF, H.264 / AVC, HEVC / H.265, HDR10+, AAC, Hardware-accelerated decoding, Widevine DRM, PlayReady, FairPlay, Google IMA SDK, Server-Side Ad Insertion (SSAI), Client-Side Ad Insertion (CSAI), GStreamer, RTSP, HDHomeRun, AirTV, Alticast, PDAQ.
 
 **Architecture:** MVVM, MVI, Unidirectional Data Flow (UDF), Clean Architecture, Use Case, Multi-module, Plugin-based integration, RIBs, MVP.
 
