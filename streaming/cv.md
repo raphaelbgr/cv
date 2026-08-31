@@ -4,7 +4,7 @@
 Architect of an OTT framework powering 50+ broadcast brands — 4K multi-DRM, live linear TV & VOD playback at scale.
 
 Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
-Languages: Portuguese (native), English (fluent)
+Languages: Portuguese (native), English (fluent), Spanish (intermediate)
 +55 (21) 98885-6697 · raphaelbgr@gmail.com
 github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
@@ -146,6 +146,10 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ## Selected Personal Projects
 
+### claude-dispatch — multi-provider LLM orchestration mesh
+Fleet-mesh dispatch daemon (~14,000 LOC Python) that routes AI coding work across a seven-machine fleet. Cost-aware model router over 5 providers / 16 models on tiers T0-T3 with automatic escalation, per-provider rate-limit cooldowns with exponential backoff, and serial-only protection for subscription quotas. Peers auto-discover (mDNS/Bonjour, DNS, peer exchange) and gossip heartbeats for liveness; jobs arrive RSA-encrypted over REST and stream live output over WebSocket. Exposes 15 MCP tools to the orchestrating agent - fleet routing, parallel fan-out, iterative/tournament loops, job telemetry, provider state - and parses worker output into per-job token and cost accounting. Agent layer is planner / executor / evaluator / monitor, where the evaluator scores output against the brief and retries or escalates tiers instead of accepting it.
+**Stack:** Python, asyncio, HTTP/WebSocket, MCP, mDNS/Bonjour, Tailscale, RSA, SQLite, systemd / launchd / Task Scheduler.
+
 ### Arquive — github.com/raphaelbgr/arquive
 Self-hosted personal media archive and streaming server. In-browser HLS playback with GPU-accelerated transcoding cache, IPTV (M3U + XMLTV EPG + recording), DLNA/UPnP for smart TVs, distributed GPU-fleet transcoding, FAISS-backed face recognition, local-AI captions via Ollama, plus a native Apple TV (SwiftUI) client.
 **Stack:** Python, React, HLS, GPU Transcoding, FAISS, InsightFace, Ollama (Qwen2.5-VL), DLNA, M3U/XMLTV, SwiftUI tvOS, JWT.
@@ -194,6 +198,10 @@ Java fundamentals: object-oriented programming, software design, code patterns a
 **Analytics:** Adobe Analytics, Adobe Marketing SDK, mParticle, Nielsen DCR, ComScore, Permutive, BlueConic, New Relic, Mux Analytics, Mixpanel, Google Analytics 4.
 
 **Testing & Build:** JUnit, Mockk, Robolectric, Espresso, Paparazzi (screenshot testing), Turbine (Flow testing), Selenium, TestNG, Buck, Gradle, CMake, Jenkins CI/CD, Flipper.
+
+**AI & Agentic Systems:** LLM orchestration, multi-provider model routing and tier escalation, agent architectures (planner / executor / evaluator / monitor), MCP (Model Context Protocol) server and tool design, Retrieval-Augmented Generation (RAG), vector databases, knowledge graphs with community detection, prompt engineering, evaluation and scoring loops, local inference (Ollama, LM Studio, Qwen2.5-VL), faster-whisper / CTranslate2 speech-to-text, FAISS, InsightFace, Stable Diffusion / ComfyUI, Agno agents, GPU fleet scheduling and VRAM accounting (CUDA + Apple Metal).
+
+**AI-Assisted Development:** Claude Code, Cursor, GitHub Copilot — daily use in production delivery: code generation, large-scale refactors, test authoring, and agentic workflows across build and release tooling.
 
 **Performance & Observability:** Quality of Experience (QoE), Time-to-First-Frame (TTFF), Rebuffering rate, Startup-time optimisation, Systrace, Perfetto, Android Profiler.
 
