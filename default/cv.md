@@ -14,14 +14,13 @@ github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
 Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT / CTV streaming frameworks, and broadcast-grade DRM. Ten-plus years shipping production apps across Android, Android TV, Fire OS, webOS and Tizen — including an OTT streaming framework powering 50+ broadcast brands and 4K multi-DRM playback (Widevine, PlayReady, FairPlay).
 
-As an independent contractor I run multiple client engagements in parallel — at any given time only one is full-time, with the rest as part-time concurrent contracts (each engagement is explicitly labelled below as full-time, long-term part-time, or concurrent part-time).
 
 ---
 
 ## Professional Experience
 
 ### Nexstar Media Group, Inc. — Senior Fire OS / Android TV Engineer
-**Aug 2025 – Present · Full-time contract via Nimble.LA · Full Remote**
+**Aug 2025 – Present · Contract via Nimble.LA · Full Remote**
 
 OTT streaming platform framework powering 50+ TV station brands for Nexstar Digital across Fire TV and Android TV.
 
@@ -42,7 +41,26 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 ---
 
 ### FreeCast, Inc. — Android / Android TV / Fire OS Engineer
-**Mar 2021 – Jul 2025 (4 yrs 5 mo) · Long-term part-time contract · Full Remote**
+**Dec 2024 – Jul 2025 (8 mo) · Contract · Full Remote**
+
+- Returned to the Select TV and FreeCast Watch products across Android, Android TV, Fire OS, webOS and Tizen through to the end of the engagement.
+
+---
+
+### Claro TV+ — Android TV / Fire OS Engineer
+**Apr 2024 – Dec 2024 (9 mo) · Contract · Full Remote**
+
+- Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators.
+- Implemented 4K streaming via DASH / HLS protocols with multi-DRM.
+- Architected the data layer as a shared Kotlin Multiplatform (KMP) submodule consumed by Android, webOS and Tizen clients.
+- Multi-module MVVM architecture; Media3 playback; analytics across Firebase + Google Analytics 4.
+
+**Stack:** Kotlin Multiplatform (KMP), Kotlin, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room, DataStore), Hilt, Media3, Coroutines / Flow, Firebase (Analytics, Crashlytics, FCM), Google Analytics 4, Picasso, Retrofit2, webOS, Tizen, JUnit, Espresso.
+
+---
+
+### FreeCast, Inc. — Android / Android TV / Fire OS Engineer
+**May 2022 – Apr 2024 (1 yr 11 mo) · Contract · Full Remote**
 
 - Led the full migration of the legacy Java codebase to Kotlin; introduced Use-Case + Clean Architecture and improved end-user UX.
 - Implemented HLS / DASH playback for live linear TV and VOD with Widevine DRM-protected streaming.
@@ -56,20 +74,8 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ---
 
-### Claro TV+ — Android TV / Fire OS Engineer
-**Apr 2024 – Dec 2024 (9 mo) · Concurrent part-time contract · Full Remote**
-
-- Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators.
-- Implemented 4K streaming via DASH / HLS protocols with multi-DRM.
-- Architected the data layer as a shared Kotlin Multiplatform (KMP) submodule consumed by Android, webOS and Tizen clients.
-- Multi-module MVVM architecture; Media3 playback; analytics across Firebase + Google Analytics 4.
-
-**Stack:** Kotlin Multiplatform (KMP), Kotlin, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room, DataStore), Hilt, Media3, Coroutines / Flow, Firebase (Analytics, Crashlytics, FCM), Google Analytics 4, Picasso, Retrofit2, webOS, Tizen, JUnit, Espresso.
-
----
-
 ### Uber Technologies — Android Engineer, Maps SDK team
-**May 2021 – May 2022 (1 yr) · Concurrent part-time contract via Matchpoint Solutions · Full Remote**
+**May 2021 – May 2022 (1 yr) · Contract via Matchpoint Solutions · Full Remote**
 
 - Worked on the Maps team SDK module developed with JNI / C++.
 - Contributed to Uber's open-source Android architecture framework (RIBs).
@@ -80,13 +86,11 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ---
 
-### Invillia — Android Engineer (Full Remote)
-**Apr 2020 – Aug 2020 · Part-time contract**
 
-- Re-modelled the Casas Bahia and Pontofrio home pages — converted a static product shelf into a fully dynamic, backend-driven shelf system.
-- Implemented end-to-end analytics tracking for product clicks and shelf scroll-depth via Firebase Analytics and custom API calls.
+### FreeCast, Inc. — Android / Android TV / Fire OS Engineer
+**Mar 2021 – May 2021 (3 mo) · Contract · Full Remote**
 
-**Stack:** Kotlin, MVVM, Dagger 2, LiveData, Retrofit2, Picasso, Firebase (Analytics, FCM, Remote Config, Crashlytics), Jenkins CI/CD, JUnit, Espresso.
+- Opening engagement on the Select TV Android and FreeCast Watch codebases, starting the migration from Java to Kotlin.
 
 ---
 
