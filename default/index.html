@@ -879,6 +879,26 @@
           label();
         });
       });
+
+      // Printing is always light. Safari's print preview does not honour the
+      // CSS variable override inside @media print, so force the attribute
+      // itself and restore it afterwards.
+      var restore = null;
+      function toLight() {
+        restore = root.getAttribute('data-theme');
+        root.setAttribute('data-theme', 'light');
+      }
+      function undo() {
+        if (restore !== null) { root.setAttribute('data-theme', restore); restore = null; }
+      }
+      window.addEventListener('beforeprint', toLight);
+      window.addEventListener('afterprint', undo);
+      if (window.matchMedia) {
+        var mq = window.matchMedia('print');
+        var onChange = function (e) { e.matches ? toLight() : undo(); };
+        mq.addEventListener ? mq.addEventListener('change', onChange)
+                            : mq.addListener && mq.addListener(onChange);
+      }
     })();
   </script>
   <article class="page">
