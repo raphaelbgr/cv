@@ -82,19 +82,21 @@
 
     .page + .page { margin-top: 14px; }
 
+    /* Grid and flex children default to min-width:auto and refuse to shrink
+       below their content, which is what blows a column past the page edge.
+       Global guard — applies on screen and in print. */
+    .page, .page * { min-width: 0; }
+
     /* ─────────────────────────────────────────────────────────
        MASTHEAD
-       Big serif name, monospace eyebrow, quiet contact strip.
+       One column at every width: eyebrow, name, positioning, then a
+       four-item contact rail. No fixed side column, so nothing can be
+       squeezed past the printable width.
        ───────────────────────────────────────────────────────── */
     .masthead {
-      display: grid;
-      /* fixed right column: a long contact line must never squeeze the name */
-      grid-template-columns: minmax(0, 1fr) 70mm;
-      gap: 28px;
-      align-items: end;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--ink);
       position: relative;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--ink);
     }
     .masthead::before {
       content: "";
@@ -106,13 +108,22 @@
       background: var(--accent);
     }
 
+    /* eyebrow left, screen-only controls right — same line, no added height */
+    .masthead-top {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
     .eyebrow {
       font-family: var(--mono);
       font-size: 8.4pt;
       letter-spacing: .26em;
       text-transform: uppercase;
       color: var(--mute);
-      margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -148,12 +159,14 @@
     }
 
     .role-line {
-      margin-top: 10px;
+      margin: 10px 0 0;
       font-family: var(--display);
       font-variation-settings: "opsz" 36, "wght" 500;
       font-size: 13pt;
+      line-height: 1.35;
       letter-spacing: -0.005em;
       color: var(--ink-2);
+      max-width: 74ch;
     }
     .role-line em {
       font-style: italic;
@@ -161,38 +174,101 @@
       font-variation-settings: "opsz" 36, "wght" 500;
     }
 
-    .contact {
-      text-align: right;
-      overflow-wrap: anywhere;
-      font-size: 9.4pt;
-      color: var(--ink-2);
-      line-height: 1.65;
+    /* ── CONTACT RAIL — the four things a recruiter actually acts on ── */
+    .contact-rail {
+      margin-top: 16px;
+      padding-top: 13px;
+      border-top: 1px solid var(--rule-soft);
+      font-style: normal;                /* <address> defaults to italic */
+      font-size: 9.6pt;
+      line-height: 1.5;
+      color: var(--ink);
       font-feature-settings: "tnum";
     }
-    .contact a {
-      color: var(--ink-2);
-      text-decoration: none;
-      border-bottom: 1px solid var(--rule);
+    .contact-rail .item {
+      display: inline-block;
+      margin: 0 28px 2px 0;
+      white-space: nowrap;               /* a label never separates from its value */
+      max-width: 100%;
     }
-    .contact a:hover { color: var(--accent); border-color: var(--accent); }
-    .contact .label {
+    .contact-rail .item:last-child { margin-right: 0; }
+    .contact-rail .label {
       font-family: var(--mono);
-      font-size: 7.6pt;
+      font-size: 7.2pt;
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--mute);
-      margin-right: 8px;
+      margin-right: 7px;
+    }
+    .contact-rail a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .contact-rail a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── PARTICULARS — the quiet band: everything the masthead shed ── */
+    .particulars {
+      margin-top: 12px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid var(--rule-soft);
+      font-size: 8.6pt;
+      line-height: 1.5;
+      color: var(--ink-2);
+    }
+    .particulars .item {
+      display: inline-block;
+      vertical-align: top;
+      margin: 0 24px 3px 0;
+      max-width: 100%;
+    }
+    .particulars .item:last-child { margin-right: 0; }
+    .particulars .label {
+      font-family: var(--mono);
+      font-size: 6.9pt;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-right: 6px;
     }
 
-    /* Masthead right column wrapper + Download PDF button */
-    .masthead-right {
-      min-width: 0;
-      max-width: 100%;
+    /* ─────────────────────────────────────────────────────────
+       SCREEN-ONLY CONTROLS — theme cycle + Download PDF
+       ───────────────────────────────────────────────────────── */
+    .toolbar {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 14px;
+      align-items: center;
+      gap: 8px;
+      flex: none;
     }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 7.8pt;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      min-height: 32px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      color: var(--ink-2);
+      border-radius: 3px;
+      cursor: pointer;
+      line-height: 1;
+      transition: border-color .2s ease, color .2s ease;
+    }
+    .theme-toggle:hover { border-color: var(--ink); color: var(--ink); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .theme-toggle .tt-dot {
+      font-size: 10pt;
+      line-height: 1;
+      color: var(--accent);
+    }
+
     .print-btn {
       display: inline-flex;
       align-items: center;
@@ -203,9 +279,11 @@
       letter-spacing: .22em;
       text-transform: uppercase;
       padding: 8px 14px;
+      min-height: 32px;
       background: var(--ink);
       color: var(--paper);
       border: 1px solid var(--ink);
+      border-radius: 3px;
       cursor: pointer;
       text-decoration: none;
       transition: background .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
@@ -227,9 +305,6 @@
     }
     .print-btn:hover .print-btn-icon {
       transform: translateY(2px);
-    }
-    @media print {
-      .print-btn, .masthead-right > .print-btn { display: none !important; }
     }
 
     /* ─────────────────────────────────────────────────────────
@@ -303,7 +378,7 @@
 
     .role-head {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: baseline;
       gap: 16px;
     }
@@ -435,7 +510,7 @@
     }
     .umbrella-head {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: baseline;
       gap: 16px;
       padding-bottom: 10px;
@@ -512,7 +587,7 @@
        ───────────────────────────────────────────────────────── */
     .projects {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 14px 22px;
     }
     .project {
@@ -547,13 +622,34 @@
       font-size: 7.4pt;
       padding: 1px 6px 0;
     }
+    .project ul {
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 0;
+    }
+    .project ul li {
+      position: relative;
+      padding-left: 14px;
+      margin: 3px 0;
+      color: var(--ink-2);
+    }
+    .project ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 6px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .project ul li strong { color: var(--ink); font-weight: 600; }
 
     /* ─────────────────────────────────────────────────────────
        EDUCATION
        ───────────────────────────────────────────────────────── */
     .education-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 16px;
       padding: 6px 0;
       align-items: baseline;
@@ -584,7 +680,7 @@
        ───────────────────────────────────────────────────────── */
     .skills-grid {
       display: grid;
-      grid-template-columns: 130px 1fr;
+      grid-template-columns: 130px minmax(0, 1fr);
       gap: 10px 18px;
       align-items: baseline;
     }
@@ -620,8 +716,10 @@
       padding-top: 12px;
       border-top: 1px solid var(--ink);
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
       font-family: var(--mono);
       font-size: 7.6pt;
       letter-spacing: .18em;
@@ -643,184 +741,118 @@
       font-weight: 600;
     }
 
+    /* Published apps */
+    .apps-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 22px; }
+    .app-card {
+      display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 14px; align-items: start;
+      padding: 12px 14px; border: 1px solid var(--rule); background: var(--paper);
+      text-decoration: none; color: inherit; break-inside: avoid;
+    }
+    .app-icon { width: 56px; height: 56px; border-radius: 12px; display: block; }
+    .app-text { display: block; }
+    .app-name { display: block; font-family: var(--display); font-weight: 600; font-size: 13.5pt; color: var(--ink); }
+    .app-plat { display: block; font-family: var(--mono); font-size: 8pt; letter-spacing: .16em;
+                text-transform: uppercase; color: var(--accent); margin: 2px 0 5px; }
+    .app-desc { display: block; font-size: 9.5pt; line-height: 1.45; color: var(--ink-2); }
+    .app-stack { display: block; font-family: var(--mono); font-size: 8pt; color: var(--mute); margin-top: 5px; }
+
     /* ─────────────────────────────────────────────────────────
        PRINT STYLES — A4, lock colors, avoid awkward breaks
        ───────────────────────────────────────────────────────── */
     @page {
       size: A4;
-      /* real top/bottom margin on EVERY printed page, so continuation
-         pages do not start flush against the paper edge */
       /* the browser owns the margin on EVERY sheet, so continuation
          pages never start flush against the paper edge */
       margin: 14mm 18mm 13mm;
     }
     @media print {
-      /* pagination: let content flow, never split a block */
-      .page { width: auto !important; max-width: none !important;
+      /* pagination: the sheet stops being a sheet and content flows */
+      .page { width: 100% !important; max-width: none !important;
               min-height: 0 !important; overflow: visible !important;
-              padding: 0 !important; page-break-after: auto; }
-      /* small blocks never split */
-      /* Chrome will not fragment a grid container: make it a block so the
-         cards can flow across a page break instead of moving as one lump */
+              padding: 0 !important; margin: 0 !important;
+              box-shadow: none !important; transform: none !important;
+              page-break-after: auto; }
+      .page:last-child { page-break-after: auto; }
+      html, body { background: var(--paper); }
+      body { padding: 0; gap: 0; }
+      a { color: inherit; }
+
+      /* screen-only chrome */
+      .toolbar, .theme-toggle, .print-btn { display: none !important; }
+
+      /* HARD RULE: nothing may exceed the printable width.
+         min-width:0 lets grid/flex children shrink; max-width:100% stops any
+         box from overhanging; break-word handles unbreakable strings.
+         Prose measures are re-asserted below so the caps survive. */
+      .page, .page * { min-width: 0; max-width: 100%; }
+      .page * { overflow-wrap: break-word; }
+      .summary p { max-width: 64ch; }
+      .role-line { max-width: 74ch; }
+
+      /* Chrome cannot fragment a grid container: across a page break it CLIPS
+         content instead of moving it. Every grid that can span a break becomes
+         a block in print; every short grid/flex row is told never to split. */
+      .masthead, .masthead-top, .contact-rail, .particulars { display: block !important; }
+      .contact-rail .item, .particulars .item { display: inline-block; }
+      .masthead, .contact-rail, .particulars, .eyebrow {
+        break-inside: avoid; page-break-inside: avoid; }
+      .masthead { padding-bottom: 12px; }
+      .contact-rail { margin-top: 12px; padding-top: 10px; }
+      .particulars { margin-top: 10px; padding-bottom: 10px; }
+
       .apps-grid { display: block !important; }
       .app-card { display: flex !important; align-items: flex-start; gap: 14px;
                   margin-bottom: 10px; break-inside: avoid; page-break-inside: avoid; }
-      .education-row { break-inside: avoid; page-break-inside: avoid; }
-      /* tall blocks may split, but never orphan a heading or a stray line */
-      .role, .project { break-inside: auto; page-break-inside: auto; orphans: 3; widows: 3; }
-      .role-head, .role-meta { break-after: avoid; page-break-after: avoid; }
-      .role ul, .project p { orphans: 3; widows: 3; }
-      .stack, .tags { break-inside: avoid; page-break-inside: avoid; }
-      /* tighten the reference table so it fits one sheet instead of orphaning
-         two rows onto a page of their own */
-      .skills-grid { gap: 3px 12px; }
-      .tags { gap: 2px 3px; }
-      .tags span { padding: 0 5px; font-size: 6.9pt; line-height: 1.5; }
-      .group { font-size: 6.9pt; padding-top: 1px; letter-spacing: .14em; }
-      .skills-grid .group { width: 96px; margin-bottom: 3px; }
-      .skills-grid .tags  { width: calc(100% - 102px); margin-bottom: 3px; }
-      /* same grid-fragmentation problem in the reference table: rebuild the two
-         columns with inline-block so rows can flow across a page break */
-      /* Chrome cannot fragment a grid container: across a page break it CLIPS
-         content instead of moving it. Every grid that can span a break becomes
-         a block in print. */
       .projects { display: block !important; }
       .project { display: block; break-inside: avoid; page-break-inside: avoid;
-                 margin-bottom: 12px; }
-      .section-head { display: block !important; }
+                 margin-bottom: 9px; }
+      .projects .project:last-child { margin-bottom: 0; }
+      .section-head { display: block !important; margin-bottom: 8px; padding-bottom: 6px;
+                      break-after: avoid; page-break-after: avoid; }
       .section-head .num { display: inline-block; margin-right: 12px; }
       .section-head h2 { display: inline-block; }
       .section-head .kicker { display: block; margin-top: 3px; }
-      .colophon { break-before: avoid; page-break-before: avoid;
-                  margin-top: 10px; padding-top: 6px; }
-      .project { margin-bottom: 9px; }
-      .projects .project:last-child { margin-bottom: 0; }
-      .skills-grid { display: block !important; }
-      .skills-grid .group { display: inline-block; width: 96px; vertical-align: top;
-                            margin-bottom: 3px; }
-      .skills-grid .tags  { display: inline-flex; width: calc(100% - 102px);
-                            vertical-align: top; margin-bottom: 3px; }
+
+      .education-row { break-inside: avoid; page-break-inside: avoid; }
+      /* tall blocks may split, but never orphan a heading or a stray line */
+      .role, .project { break-inside: auto; page-break-inside: auto; orphans: 3; widows: 3; }
+      .role-head, .role-meta { break-inside: avoid; page-break-inside: avoid;
+                               break-after: avoid; page-break-after: avoid; }
+      .role ul, .project p { orphans: 3; widows: 3; }
+      .stack, .tags { break-inside: avoid; page-break-inside: avoid; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+      section { margin-top: 10px; }
+
+      /* Reference table: rebuilt from the grid with inline-block so rows flow
+         across a page break. font-size:0 on the container kills the inter-tag
+         whitespace, so the two columns add up to EXACTLY 100% and cannot
+         overhang the right margin. */
+      .skills-grid { display: block !important; font-size: 0; }
+      .skills-grid .group { display: inline-block; width: 100px; vertical-align: top;
+                            font-size: 6.9pt; letter-spacing: .14em; padding-top: 1px;
+                            margin-bottom: 3px;
+                            break-inside: avoid; page-break-inside: avoid;
+                            break-after: avoid; page-break-after: avoid; }
+      .skills-grid .tags  { display: inline-flex; width: calc(100% - 100px);
+                            vertical-align: top; font-size: 6.9pt; gap: 2px 3px;
+                            margin-bottom: 3px;
+                            break-inside: avoid; page-break-inside: avoid; }
+      /* the author's intended 6.9pt was being out-specified by the screen rule
+         `.skills-grid .tags span`, so the reference table printed at 7.8pt —
+         match the specificity so the tightening actually applies */
+      .tags span,
+      .skills-grid .tags span { padding: 0 5px; font-size: 6.9pt; line-height: 1.5; }
+
       /* the colophon alone was spilling onto a page of its own */
       .colophon { margin-top: 14px; padding-top: 8px;
+                  break-before: avoid; page-break-before: avoid;
                   break-inside: avoid; page-break-inside: avoid; }
-      section { margin-top: 10px; }
-      .section-head { margin-bottom: 8px; padding-bottom: 6px; }
-      .skills-grid .group { break-inside: avoid; page-break-inside: avoid;
-                            break-after: avoid; page-break-after: avoid; }
-      .skills-grid .tags  { break-inside: avoid; page-break-inside: avoid; }
-      .section-head { break-after: avoid; page-break-after: avoid; }
-      h2, h3 { break-after: avoid; page-break-after: avoid; }
 
-      html, body { background: var(--paper); }
-      body { padding: 0; gap: 0; }
-      .page {
-        box-shadow: none;
-        margin: 0;
-      }
-      .page:last-child { page-break-after: auto; }
-      a { color: inherit; }
-      .role, .project { break-inside: auto; page-break-inside: auto; orphans: 3; widows: 3; }
-      .section-head { break-after: avoid; page-break-after: avoid; }
-    }
-
-    /* ─────────────────────────────────────────────────────────
-       SCREEN: small viewports — readable but not optimized for mobile
-       The CV is designed for A4 print/PDF; on small screens we
-       keep it scaled down rather than reflow into a mobile layout.
-       ───────────────────────────────────────────────────────── */
-    @media screen and (max-width: 900px) {
-      .page { transform: none !important; }
-
-      /* The sheet stops being a sheet: fluid width, no fixed A4 box, no
-         horizontal scroll. Everything two-column collapses to one. */
-      html, body { background: var(--paper); }
-      body { padding: 0; display: block; }
-      .page {
-        width: 100% !important; max-width: 100% !important;
-        min-height: 0 !important; margin: 0 !important;
-        padding: 22px 18px 40px !important;
-        box-shadow: none !important; overflow: visible !important;
-      }
-
-      .masthead { grid-template-columns: 1fr !important; gap: 16px; align-items: start; }
-      .masthead-right { align-items: flex-start; max-width: 100%; }
-      .contact { text-align: left; font-size: 12px; line-height: 1.7; }
-      .contact div { display: flex; gap: 8px; }
-      .contact .label { min-width: 42px; flex: none; }
-      .name { font-size: clamp(34px, 11vw, 52px); }
-      .role-line { font-size: 15px; }
-      .eyebrow { font-size: 9px; letter-spacing: .18em; flex-wrap: wrap; }
-
-      .section-head { grid-template-columns: 1fr !important; gap: 2px; }
-      .section-head .num { display: block; }
-      .section-head .kicker { grid-column: 1; }
-
-      .role-head { grid-template-columns: 1fr !important; gap: 2px; }
-      .role-head .dates { text-align: left; }
-      .role-meta { flex-wrap: wrap; row-gap: 4px; }
-      .projects { grid-template-columns: 1fr !important; }
-      .skills-grid { grid-template-columns: 1fr !important; gap: 2px 0; }
-      .skills-grid .group { margin-top: 12px; }
-      .education-row { grid-template-columns: 1fr !important; gap: 2px; }
-      .education-row .when { text-align: left; }
-      .app-card { grid-template-columns: 44px 1fr; gap: 12px; }
-      .app-icon { width: 44px; height: 44px; }
-
-      /* touch-friendly reading sizes */
-      /* Grid and flex children default to min-width:auto and refuse to shrink
-         below their content, which stretches the page past the viewport.
-         This is what was causing the horizontal cut on phones. */
-      .page, .page * { min-width: 0; }
-      .contact .label { min-width: 42px; }
-      .contact div { flex-wrap: wrap; }
-      html, body { overflow-x: hidden; max-width: 100%; }
-      .page, .page * { overflow-wrap: break-word; }
-      .stack, .tags { flex-wrap: wrap; }
-
-      body { font-size: 15px; }
-      .lede, .role ul li, .project ul li { font-size: 14.5px; line-height: 1.55; }
-      .tags span, .stack span { font-size: 11px; }
-      .colophon { flex-wrap: wrap; gap: 6px; font-size: 9px; }
-    }
-
-    /* ─────────────────────────────────────────────────────────
-       DARK MODE — screen only, never printed
-       ───────────────────────────────────────────────────────── */
-    :root[data-theme="dark"] {
-      --paper:       #14120F;
-      --paper-2:     #0E0D0B;
-      --ink:         #F2EDE3;
-      --ink-2:       #C9C2B6;
-      --mute:        #8B8478;
-      --rule:        #34302A;
-      --rule-soft:   #262320;
-      --accent:      #E0685C;
-      --accent-deep: #C44F44;
-      --accent-soft: #3A211D;
-    }
-    :root[data-theme="dark"] .page { box-shadow: none; }
-    :root[data-theme="dark"] .tags span,
-    :root[data-theme="dark"] .stack span { background: rgba(255,255,255,.04); }
-    :root[data-theme="dark"] .app-card { background: var(--paper-2); }
-    :root[data-theme="dark"] .btn { background: var(--ink); color: var(--paper); }
-    :root[data-theme="dark"] .print-btn { background: var(--ink); color: var(--paper); }
-    :root[data-theme="dark"] .page::after { display: none; }
-
-    .theme-toggle {
-      position: fixed; top: 12px; right: 12px; z-index: 50;
-      font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-      text-transform: uppercase;
-      padding: 8px 12px; border: 1px solid var(--rule);
-      background: var(--paper); color: var(--ink-2);
-      border-radius: 4px; cursor: pointer; line-height: 1;
-      box-shadow: 0 2px 10px rgba(0,0,0,.10);
-    }
-    .theme-toggle:hover { border-color: var(--ink); color: var(--ink); }
-    @media print {
-      .theme-toggle { display: none !important; }
       /* The PDF is always light. Headless Chrome reports prefers-color-scheme:
          dark, which was producing dark content framed by white page margins.
-         A CV goes to ATS previews and printers — it prints light. */
+         A CV goes to ATS previews and printers — it prints light. The script
+         also forces data-theme="light" for the duration of the print, so all
+         three toggle states (System / Dark / Light) print identically. */
       :root, :root[data-theme="dark"], :root[data-theme="light"] {
         /* pure white so the printed sheet has no seam between the painted
            page box and the unpainted @page margin */
@@ -838,73 +870,214 @@
       :root[data-theme="dark"] .tags span,
       :root[data-theme="dark"] .stack span { background: rgba(255, 255, 255, .4); }
       :root[data-theme="dark"] .app-card { background: var(--paper); }
-      :root[data-theme="dark"] .print-btn { background: var(--ink); color: var(--paper); }
       html, body, .page { background: var(--paper) !important; }
     }
 
-    /* Published apps */
-    .apps-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 22px; }
-    .app-card {
-      display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: start;
-      padding: 12px 14px; border: 1px solid var(--rule); background: var(--paper);
-      text-decoration: none; color: inherit; break-inside: avoid;
+    /* ─────────────────────────────────────────────────────────
+       SCREEN: phones and narrow windows.
+       Scoped `screen and` on purpose — a bare max-width query also matches
+       A4 print (~794px) and would silently reflow the PDF.
+       ───────────────────────────────────────────────────────── */
+    @media screen and (max-width: 900px) {
+      /* The sheet stops being a sheet: fluid width, no fixed A4 box, no
+         horizontal scroll. Single column, comfortable measure, big targets. */
+      html, body { background: var(--paper); overflow-x: hidden; max-width: 100%; }
+      body { padding: 0; display: block; font-size: 15px; }
+      .page {
+        width: 100% !important; max-width: 100% !important;
+        min-height: 0 !important; margin: 0 !important;
+        padding: 18px 18px 40px !important;
+        box-shadow: none !important; overflow: visible !important;
+        transform: none !important;
+      }
+      .page, .page * { min-width: 0; overflow-wrap: break-word; }
+
+      /* controls above the eyebrow, thumb-sized */
+      .masthead-top { flex-direction: column; align-items: stretch; gap: 14px; }
+      .toolbar { gap: 10px; flex-wrap: wrap; }
+      .theme-toggle, .print-btn {
+        min-height: 44px; padding: 12px 14px; font-size: 11px; letter-spacing: .18em;
+      }
+      .theme-toggle { flex: 1 1 auto; justify-content: center; }
+      .print-btn { flex: 1 1 auto; justify-content: center; }
+
+      .eyebrow { font-size: 9px; letter-spacing: .18em; flex-wrap: wrap; }
+      .name { font-size: clamp(34px, 11vw, 52px); }
+      .role-line { font-size: 15px; line-height: 1.4; max-width: 100%; }
+
+      .contact-rail { font-size: 15px; margin-top: 14px; padding-top: 10px; }
+      .contact-rail .item {
+        display: flex; align-items: baseline; gap: 10px;
+        white-space: normal; margin: 0; min-height: 44px;
+      }
+      .contact-rail .label { flex: none; min-width: 46px; font-size: 10px; margin-right: 0; }
+      .contact-rail a { display: inline-block; padding: 11px 0; }
+
+      .particulars { font-size: 13.5px; line-height: 1.55; margin-top: 14px; padding-bottom: 14px; }
+      .particulars .item { display: block; margin: 0 0 8px; }
+      .particulars .item:last-child { margin-bottom: 0; }
+      .particulars .label { display: block; font-size: 10px; margin: 0 0 1px; }
+
+      .section-head { grid-template-columns: 1fr !important; gap: 2px; }
+      .section-head .num { display: block; }
+      .section-head .kicker { grid-column: 1; }
+
+      .role-head { grid-template-columns: 1fr !important; gap: 2px; }
+      .role-head .dates { text-align: left; }
+      .role-meta { flex-wrap: wrap; row-gap: 4px; }
+      .projects { grid-template-columns: 1fr !important; }
+      .skills-grid { grid-template-columns: 1fr !important; gap: 2px 0; }
+      .skills-grid .group { margin-top: 12px; }
+      .education-row { grid-template-columns: 1fr !important; gap: 2px; }
+      .education-row .when { text-align: left; }
+      .app-card { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; }
+      .app-icon { width: 44px; height: 44px; }
+
+      /* touch-friendly reading sizes */
+      .lede, .role ul li, .project ul li { font-size: 14.5px; line-height: 1.55; }
+      .tags span, .stack span { font-size: 11px; }
+      .stack, .tags { flex-wrap: wrap; }
+      .colophon { flex-wrap: wrap; gap: 6px; font-size: 9px; }
     }
-    .app-icon { width: 56px; height: 56px; border-radius: 12px; display: block; }
-    .app-text { display: block; }
-    .app-name { display: block; font-family: var(--display); font-weight: 600; font-size: 13.5pt; color: var(--ink); }
-    .app-plat { display: block; font-family: var(--mono); font-size: 8pt; letter-spacing: .16em;
-                text-transform: uppercase; color: var(--accent); margin: 2px 0 5px; }
-    .app-desc { display: block; font-size: 9.5pt; line-height: 1.45; color: var(--ink-2); }
-    .app-stack { display: block; font-family: var(--mono); font-size: 8pt; color: var(--mute); margin-top: 5px; }
+
+    @media screen and (max-width: 420px) {
+      .page { padding: 16px 14px 32px !important; }
+      .eyebrow { gap: 8px; }
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       DARK MODE — screen only, never printed.
+       data-theme is the RESOLVED theme (light|dark); data-theme-mode is
+       what the user chose (system|dark|light) and only drives the button.
+       ───────────────────────────────────────────────────────── */
+    :root[data-theme="dark"] {
+      --paper:       #14120F;
+      --paper-2:     #0E0D0B;
+      --ink:         #F2EDE3;
+      --ink-2:       #C9C2B6;
+      --mute:        #8B8478;
+      --rule:        #34302A;
+      --rule-soft:   #262320;
+      --accent:      #E0685C;
+      --accent-deep: #C44F44;
+      --accent-soft: #3A211D;
+    }
+    :root[data-theme="dark"] .page { box-shadow: none; }
+    :root[data-theme="dark"] .tags span,
+    :root[data-theme="dark"] .stack span { background: rgba(255,255,255,.04); }
+    :root[data-theme="dark"] .app-card { background: var(--paper-2); }
+    :root[data-theme="dark"] .print-btn { background: var(--ink); color: var(--paper); }
+    :root[data-theme="dark"] .theme-toggle { background: transparent; }
+    :root[data-theme="dark"] .page::after { display: none; }
   </style>
-</head>
-<body>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
   <script>
+    /* Theme: three states — System → Dark → Light, cycling on click.
+       `cv-theme` in localStorage stores the CHOICE (system|dark|light);
+       default is System. `data-theme` on <html> carries the RESOLVED theme
+       (light|dark) that the CSS reacts to, `data-theme-mode` carries the
+       choice so the button can show it. Runs in <head> so the resolved
+       theme is set before first paint — no flash. */
     (function () {
       var root = document.documentElement;
-      var saved = null;
-      try { saved = localStorage.getItem('cv-theme'); } catch (e) {}
-      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var theme = saved || (prefersDark ? 'dark' : 'light');
-      root.setAttribute('data-theme', theme);
+      var MODES = ['system', 'dark', 'light'];
+      var DOT   = { system: '◐', dark: '●', light: '○' };
+      var NAME  = { system: 'System', dark: 'Dark', light: 'Light' };
+
+      var mode = 'system';
+      try {
+        var saved = localStorage.getItem('cv-theme');
+        if (MODES.indexOf(saved) !== -1) { mode = saved; }
+      } catch (e) {}
+
+      var darkQuery = window.matchMedia
+        ? window.matchMedia('(prefers-color-scheme: dark)')
+        : null;
+
+      function resolved() {
+        if (mode === 'dark')  { return 'dark'; }
+        if (mode === 'light') { return 'light'; }
+        return (darkQuery && darkQuery.matches) ? 'dark' : 'light';
+      }
+
+      function paint() {
+        var btn = document.getElementById('themeToggle');
+        if (!btn) { return; }
+        var dot = btn.querySelector('.tt-dot');
+        var lbl = btn.querySelector('.tt-label');
+        if (dot) { dot.textContent = DOT[mode]; }
+        if (lbl) { lbl.textContent = NAME[mode]; }
+        btn.setAttribute('aria-label',
+          'Colour theme: ' + NAME[mode] + '. Activate to cycle System, Dark, Light.');
+        btn.setAttribute('title', 'Colour theme: ' + NAME[mode]);
+      }
+
+      function apply() {
+        root.setAttribute('data-theme', resolved());
+        root.setAttribute('data-theme-mode', mode);
+        paint();
+      }
+
+      apply();
+
       document.addEventListener('DOMContentLoaded', function () {
         var btn = document.getElementById('themeToggle');
-        function label() { btn.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark'; }
-        label();
+        if (!btn) { return; }
+        paint();
         btn.addEventListener('click', function () {
-          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-          root.setAttribute('data-theme', next);
-          try { localStorage.setItem('cv-theme', next); } catch (e) {}
-          label();
+          mode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+          try { localStorage.setItem('cv-theme', mode); } catch (e) {}
+          apply();
         });
       });
 
-      // Printing is always light. Safari's print preview does not honour the
-      // CSS variable override inside @media print, so force the attribute
-      // itself and restore it afterwards.
-      var restore = null;
+      /* In System mode, follow the OS if it changes while the page is open. */
+      if (darkQuery) {
+        var onScheme = function () { if (mode === 'system') { apply(); } };
+        darkQuery.addEventListener ? darkQuery.addEventListener('change', onScheme)
+                                   : darkQuery.addListener && darkQuery.addListener(onScheme);
+      }
+
+      /* Printing is always light, in all three states. Safari's print preview
+         does not honour the CSS variable override inside @media print, and
+         print-color-adjust: exact would paint the dark palette anyway, so
+         force the attribute itself and restore it afterwards. */
+      var printing = false;
       function toLight() {
-        restore = root.getAttribute('data-theme');
+        if (printing) { return; }
+        printing = true;
         root.setAttribute('data-theme', 'light');
       }
       function undo() {
-        if (restore !== null) { root.setAttribute('data-theme', restore); restore = null; }
+        if (!printing) { return; }
+        printing = false;
+        root.setAttribute('data-theme', resolved());
       }
       window.addEventListener('beforeprint', toLight);
       window.addEventListener('afterprint', undo);
       if (window.matchMedia) {
         var mq = window.matchMedia('print');
-        var onChange = function (e) { e.matches ? toLight() : undo(); };
-        mq.addEventListener ? mq.addEventListener('change', onChange)
-                            : mq.addListener && mq.addListener(onChange);
+        var onPrint = function (e) { e.matches ? toLight() : undo(); };
+        mq.addEventListener ? mq.addEventListener('change', onPrint)
+                            : mq.addListener && mq.addListener(onPrint);
       }
     })();
   </script>
+</head>
+<body>
   <article class="page">
     <!-- ════════════ MASTHEAD ════════════ -->
     <header class="masthead">
-      <div>
+      <div class="masthead-top">
+        <div class="toolbar">
+          <button class="theme-toggle" id="themeToggle" type="button"
+                  aria-label="Colour theme: System. Activate to cycle System, Dark, Light.">
+            <span class="tt-dot" aria-hidden="true">◐</span><span class="tt-label">System</span>
+          </button>
+          <a class="print-btn" href="cv.pdf" download="raphael-bernardo-cv.pdf" aria-label="Download CV as PDF">
+            <span class="print-btn-icon" aria-hidden="true">↓</span>
+            <span>Download PDF</span>
+          </a>
+        </div>
         <div class="eyebrow">
           <span class="vol">Vol. X</span>
           <span class="sep"></span>
@@ -912,33 +1085,31 @@
           <span class="sep"></span>
           <span>2026 Edition</span>
         </div>
-        <h1 class="name">
-          <span class="given">Raphael</span>
-          <span class="family">Bernardo</span>
-        </h1>
-        <p class="role-line">
-          Senior Android Engineer · <em>Applied AI &amp; Forward Deployed Engineer</em><br />
-          Ex-Uber (contract) · Android TV, Fire OS and multi-brand OTT streaming — Media3/ExoPlayer, DRM, native JNI/C++, and agent-driven delivery.
-        </p>
       </div>
-      <div class="masthead-right">
-        <a class="print-btn" href="cv.pdf" download="raphael-bernardo-cv.pdf" aria-label="Download CV as PDF">
-          <span class="print-btn-icon" aria-hidden="true">↓</span>
-          <span>Download PDF</span>
-        </a>
-        <address class="contact">
-          <div><span class="label">Loc</span>Rio de Janeiro · GMT&minus;3</div>
-          <div><span class="label">Cit</span>Brazilian + Portuguese (EU) dual citizen</div>
-          <div><span class="label">Lang</span>Portuguese (native) · English (fluent) · Spanish (intermediate)</div>
-          <div><span class="label">Avail</span>Open to a new engagement · current contract transitionable with notice</div>
-          <div><span class="label">Eng</span>Offshore B2B contractor (own CNPJ) · full US Eastern overlap</div>
-          <div><span class="label">Tel</span>+55 21 98885&#8209;6697</div>
-          <div><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></div>
-          <div><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></div>
-          <div><span class="label">In</span><a href="https://www.linkedin.com/in/raphaelbgr/">linkedin.com/in/raphaelbgr</a></div>
-        </address>
-      </div>
+      <h1 class="name">
+        <span class="given">Raphael</span>
+        <span class="family">Bernardo</span>
+      </h1>
+      <p class="role-line">
+        Senior Android Engineer · <em>Applied AI &amp; Forward Deployed Engineer</em><br />
+        Ex-Uber (contract) · Android TV, Fire OS and multi-brand OTT streaming — Media3/ExoPlayer, DRM, native JNI/C++, and agent-driven delivery.
+      </p>
+      <address class="contact-rail">
+        <span class="item"><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></span>
+        <span class="item"><span class="label">Tel</span>+55 21 98885&#8209;6697</span>
+        <span class="item"><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></span>
+        <span class="item"><span class="label">In</span><a href="https://www.linkedin.com/in/raphaelbgr/">linkedin.com/in/raphaelbgr</a></span>
+      </address>
     </header>
+
+    <!-- ════════════ PARTICULARS — quiet band, everything the masthead shed ════════════ -->
+    <div class="particulars">
+      <span class="item"><span class="label">Loc</span>Rio de Janeiro · GMT&minus;3</span>
+      <span class="item"><span class="label">Cit</span>Brazilian + Portuguese (EU) dual citizen</span>
+      <span class="item"><span class="label">Lang</span>Portuguese (native) · English (fluent) · Spanish (intermediate)</span>
+      <span class="item"><span class="label">Avail</span>Open to a new engagement · current contract transitionable with notice</span>
+      <span class="item"><span class="label">Eng</span>Offshore B2B contractor (own CNPJ) · full US Eastern overlap</span>
+    </div>
 
     <!-- ════════════ 01 SUMMARY ════════════ -->
     <section class="summary">
@@ -1080,7 +1251,7 @@
           </div>
           <ul>
             <li>Worked on the <strong>Maps team SDK</strong> module — JNI/C++ bindings between Uber's native Maps engine and the Android client.</li>
-            <li>Contributed to Uber's open-source Android architecture framework (<strong>RIBs</strong>); shipped to Uber Rider, Uber Eats and Uber Driver.</li>
+            <li>Worked in Uber's <strong>RIBs</strong> architecture inside the internal monorepo (not the public repository); the SDK module shipped into Uber Rider, Uber Eats and Uber Driver.</li>
             <li>Operated inside a 10K+ engineer codebase using <strong>Buck, Flipper</strong>, custom analytics / logger / crash reporter and a feature-by-module architecture.</li>
           </ul>
           <div class="stack">
