@@ -22,7 +22,7 @@ Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT 
 ## Professional Experience
 
 ### Nexstar Media Group, Inc. — Senior Fire OS / Android TV Engineer
-**Aug 2025 – Present · Contract via Nimble.LA · Full Remote**
+**Aug 2025 – Present · Contract · Full Remote**
 
 Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android/Fire OS contributor on the platform engineering team; the items below are the areas I worked in, not sole ownership of the platform.
 
