@@ -36,7 +36,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 - Refactored callback patterns to reactive event-driven architecture using Kotlin SharedFlow; resolved background-audio playback issues during navigation transitions and lifecycle-aware leaks in fragment navigation.
 - Integrated Firebase Crashlytics and New Relic for crash reporting and performance monitoring.
 - Wrote unit and UI tests using JUnit, Mockk, Robolectric, and Espresso.
-- Run an agent-driven delivery workflow end to end: an agent picks up the tracker issue with its
+- Run a client-approved agent-driven delivery workflow end to end: an agent picks up the tracker issue with its
   acceptance criteria, works the change on an isolated branch, runs the test suite alongside
   agent-driven end-to-end checks against a running build, and opens a GitHub pull request
   carrying the issue context and test evidence. GitHub Actions runs the pipeline; a second model
@@ -56,7 +56,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 ---
 
 ### Claro TV+ — Android TV / Fire OS Engineer
-**Apr 2024 – Dec 2024 (9 mo) · Contract via Global Hitss · Full Remote**
+**Apr 2024 – Dec 2024 (8 mo) · Contract via Global Hitss · Full Remote**
 
 - Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators.
 - Implemented 4K streaming via DASH / HLS protocols with multi-DRM.
@@ -99,7 +99,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 
 
 ### FreeCast, Inc. — Android / Android TV / Fire OS Engineer
-**Mar 2021 – May 2021 (3 mo) · Contract · Full Remote**
+**Mar 2021 – May 2021 (2 mo) · Contract · Full Remote**
 
 - Opening engagement on the Select TV Android and FreeCast Watch codebases, starting the migration from Java to Kotlin.
 
@@ -159,109 +159,6 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 ---
 
 
-## AI-Native Engineering Practice
-
-I run my own multi-machine agent infrastructure and treat instrumentation, evaluation and
-completion criteria as engineering artefacts rather than process. Figures below are from the
-source, not from README files.
-
-### claude-dispatch — multi-provider LLM orchestration mesh
-
-A 14,168-line Python dispatch daemon that routes AI coding work across a seven-machine fleet,
-exposed to the orchestrating agent as 15 MCP tools.
-
-- **Cost-aware routing across 8 providers, 22 models and 6 tiers.** A single resolver applies
-  rate-limit backoff, per-provider cooldowns, parallel-safety and required model capabilities
-  in order, then scores candidates by task tags. Task type is inferred from the prompt; a
-  complexity score can force a request up a tier or down to a free one.
-- **Automatic escalation deliberately stops below the expensive tier.** Anthropic models are
-  never dispatched as workers — the orchestrator is not a worker. Frontier tiers are opt-in and
-  unreachable from any automatic path.
-- **Subscription-quota protection.** Flat-rate providers are marked serial-only, so a parallel
-  fan-out physically cannot select one and burn its concurrency limit.
-- **Encrypted job transport keyed off existing SSH identity** — RSA-OAEP(SHA-256) + AES-256-GCM,
-  fresh symmetric key and nonce per message, clients authenticated by public-key fingerprint
-  against `authorized_keys`. No second PKI to operate.
-- **Five-source peer discovery** — mDNS/Bonjour, config, Tailscale DNS, peer exchange and gossip
-  heartbeats, merged under an explicit precedence ladder. Running now with six peers, two of
-  which were learned by heartbeat with no configuration entry.
-- **Per-job token and cost extraction** parsed from worker output, with counterfactual accounting
-  and a live WebSocket stream of worker output.
-
-### Encrypted clipboard and screenshot mesh across the fleet
-
-52,097 lines with 1,624 tests. Hybrid AES-256-GCM + RSA-OAEP over the same SSH identity, and
-**four separate HMAC token families** — clip, API, share and archive — deliberately scoped so a
-share token cannot be replayed to fetch a different artefact. Peer-to-peer by default with a
-per-machine store; a seven-method access cascade falls from local HTTP through LAN, SMB, SCP,
-SFTP and Tailscale before any cloud path. Decryption is server-side, so a recipient needs the
-token but never the key.
-
-### Manifest-driven fleet deployment
-
-A supervisor running unattended across five machines under launchd, systemd and Task Scheduler,
-managing eleven applications. Each app ships a monotonic `VERSION.json` and a manifest declaring
-its install, launch and `/health` contract; deployment is a git push. Supervision and
-auto-update run on deliberately decoupled intervals so a crash is restarted in seconds without
-waiting for the update poll. Cross-machine control is RSA-signed per request. Failed self-updates
-roll back and queue a pending action for the next session.
-
-### Instrumentation as a definition of done
-
-I authored a language-neutral **trace-contract** standard: a compile-time reference graph is the
-specification, and the runtime trace is reconciled against it automatically. It ships a written
-spec, JSON Schemas, a cross-language conformance oracle, a golden-case corpus, and an agent
-plugin whose hook blocks completion while the graph is stale. Three independent implementations
-exist across Python and TypeScript services, generating live trace volume in production.
-
-Gate severity is scoped rather than uniform: agent-authored edits are blocked at the definition
-of done, while human commits degrade to a lint error by profile — never a unit-test failure.
-
-### Closed-loop evaluation on real devices
-
-For TV clients I expose an on-device HTTP diagnostic surface — trace, state, screenshot, scripted
-navigation and a named test-routine harness of **149 routines**, each declaring required
-parameters and returning a structured pass/fail with per-step detail, or HTTP 422 with a
-machine-readable reason. This lets an agent drive the application, capture what the screen
-actually shows, read the emitted events, and evaluate the result against the contract without a
-human in the loop.
-
-The same discipline applies to the harness itself: routines snapshot and restore application
-state on every exit path, and health probes are excluded from idle accounting — a monitoring
-call must not be mistaken for activity by the thing it monitors.
-
-### Agent workflows from tracker issue to pull request
-
-The shape I build for: an agent picks up a **Jira** issue with its acceptance criteria, works the
-change on an isolated branch, runs the project's test suite together with agent-driven end-to-end
-checks against a running build, and delivers a **GitHub** pull request that already carries the
-issue context — summary, acceptance criteria and test evidence — so review starts from the intent
-rather than from the diff.
-
-The reusable pieces are the ones that make it safe: one isolated worktree per task so parallel
-agents cannot collide, a second model auditing the resulting diff against the original request
-before anything is reported, and machine-checked acceptance gates — each an executable command
-with an expected result — that must pass with recorded evidence before work counts as done.
-
-### Resource governance
-
-A GPU inference front door that verifies a model is fully resident after load, unloads it and
-fails with a typed error rather than allowing a silent spill to CPU; measured 11.6 GB to 1.8 GB
-of reclaimed VRAM. Long-running jobs publish liveness-stamped progress files, where stalled is
-judged by heartbeat age rather than process existence — a wedged process keeps a live PID.
-
-### Autonomous work intake
-
-A chat-driven gateway that accepts a request, runs a headless coding agent against the target
-repository, then dispatches a second model to audit the resulting diff against the original
-request and raise an alert when the two disagree. It reports and commits; it never silently
-reverts.
-
-**Stack:** Python, asyncio, MCP, Jira, GitHub, git worktrees, HTTP/WebSocket, RSA-OAEP + AES-256-GCM, mDNS/Bonjour, Tailscale,
-SQLite, systemd / launchd / Task Scheduler, Kotlin, Ktor, CUDA, Metal.
-
----
-
 ## Published Applications
 
 Shipped under my own developer accounts on the App Store and Google Play.
@@ -289,6 +186,45 @@ iOS counterpart of the price-per-volume comparison app, built natively in SwiftU
 
 ---
 
+## AI-Native Engineering Practice
+
+Infrastructure I built and run on my own machines, on my own time. Nothing below lives in a client
+codebase or ships in a client build.
+
+### Multi-provider LLM orchestration
+A dispatch daemon routing coding work across my own seven-machine fleet, exposed to the
+orchestrating agent as 15 MCP tools. Cost-aware routing over 8 providers and 22 models in 6 tiers,
+applying rate-limit backoff, per-provider cooldowns and capability matching in order. Flat-rate
+providers are marked serial-only, so a parallel fan-out cannot burn a subscription's concurrency
+limit. Encrypted job transport keyed off the existing SSH identity — RSA-OAEP + AES-256-GCM,
+fresh key and nonce per message — with five-source peer discovery under an explicit precedence
+ladder.
+
+### Instrumentation as a definition of done
+I authored a language-neutral trace-contract standard: the compile-time reference graph is the
+specification, and the runtime trace is reconciled against it automatically. It ships a written
+spec, JSON Schemas, a cross-language conformance oracle, a golden-case corpus, and an agent plugin
+whose hook blocks completion while the graph is stale. Gate severity is scoped — agent-authored
+edits block at the definition of done; human commits degrade to a lint error, never a test failure.
+
+### Closed-loop evaluation on my own TV app
+My personal tvOS and Android TV media player exposes an on-device HTTP diagnostic surface — trace,
+state, screenshot, scripted navigation, and 149 named test routines, each declaring required
+parameters and returning a structured pass/fail or a machine-readable 422. An agent drives the app,
+captures what the screen actually shows, reads the emitted events and evaluates against the
+contract. Compiled out of release builds.
+
+### Fleet operations
+Manifest-driven deployment across five personal machines under launchd, systemd and Task Scheduler.
+Each application declares its install, launch and health contract; deployment is a git push.
+Supervision and auto-update run on decoupled intervals so a crash restarts in seconds. Cross-machine
+control is RSA-signed per request.
+
+**Stack:** Python, asyncio, MCP, HTTP/WebSocket, RSA-OAEP + AES-256-GCM, mDNS/Bonjour, Tailscale,
+SQLite, systemd / launchd / Task Scheduler, Kotlin, Ktor, CUDA, Metal.
+
+---
+
 ## Selected Personal Projects
 
 ### Arquive — backend for the shipped Archive tvOS app above
@@ -306,11 +242,7 @@ Android music player with three pluggable design systems users switch at runtime
 **Instituto Infnet — Rio de Janeiro · 2013 – 2018**
 B.S. in Computer Engineering. Software development, mathematical modelling for software, operating-systems and computer-hardware architecture.
 
-**Chiswick House School — Malta · 1997 – 1998**
-Primary education (English-medium).
 
-**Orion Consulting — Rio de Janeiro · 2010**
-Java fundamentals: object-oriented programming, software design, code patterns and logic.
 
 ---
 
@@ -328,7 +260,7 @@ Java fundamentals: object-oriented programming, software design, code patterns a
 
 **Cloud & Backend:** Firebase (Analytics, Crashlytics, FCM, Auth, Firestore, Remote Config, In-App Messaging), AWS (SQS, SNS, Storage), REST APIs, Retrofit2, Moshi.
 
-**Analytics:** Adobe Analytics, Adobe Marketing SDK, mParticle, Nielsen DCR, ComScore, Permutive, BlueConic, New Relic, Mux Analytics, Mixpanel, Google Analytics 4.
+**Analytics:** New Relic, Mixpanel, Google Analytics 4, Firebase Analytics.
 
 **Testing & Build:** JUnit, Mockk, Robolectric, Espresso, Selenium, TestNG, Buck, Gradle, CMake, Jenkins CI/CD, Flipper.
 

@@ -681,6 +681,20 @@
       .skills-grid .tags  { width: calc(100% - 102px); margin-bottom: 3px; }
       /* same grid-fragmentation problem in the reference table: rebuild the two
          columns with inline-block so rows can flow across a page break */
+      /* Chrome cannot fragment a grid container: across a page break it CLIPS
+         content instead of moving it. Every grid that can span a break becomes
+         a block in print. */
+      .projects { display: block !important; }
+      .project { display: block; break-inside: avoid; page-break-inside: avoid;
+                 margin-bottom: 12px; }
+      .section-head { display: block !important; }
+      .section-head .num { display: inline-block; margin-right: 12px; }
+      .section-head h2 { display: inline-block; }
+      .section-head .kicker { display: block; margin-top: 3px; }
+      .colophon { break-before: avoid; page-break-before: avoid;
+                  margin-top: 10px; padding-top: 6px; }
+      .project { margin-bottom: 9px; }
+      .projects .project:last-child { margin-bottom: 0; }
       .skills-grid { display: block !important; }
       .skills-grid .group { display: inline-block; width: 96px; vertical-align: top;
                             margin-bottom: 3px; }
@@ -689,7 +703,8 @@
       /* the colophon alone was spilling onto a page of its own */
       .colophon { margin-top: 14px; padding-top: 8px;
                   break-inside: avoid; page-break-inside: avoid; }
-      section { margin-top: 14px; }
+      section { margin-top: 10px; }
+      .section-head { margin-bottom: 8px; padding-bottom: 6px; }
       .skills-grid .group { break-inside: avoid; page-break-inside: avoid;
                             break-after: avoid; page-break-after: avoid; }
       .skills-grid .tags  { break-inside: avoid; page-break-inside: avoid; }
@@ -817,7 +832,7 @@
             <li>Integrated the platform's analytics and audience-measurement stack under <strong>GDPR / CCPA</strong> compliance.</li>
             <li>Delivered TV-optimised auth (device-based), entitlement &amp; flexible paywall, and zero-downtime feature rollouts across a large multi-brand flavor matrix via remote config; built Leanback TV UI with full d-pad navigation.</li>
             <li>Refactored callback chains to reactive Kotlin <strong>SharedFlow</strong>; resolved fragment-lifecycle leaks; wired <strong>Firebase Crashlytics + New Relic</strong> with JUnit, Mockk, Robolectric, Espresso coverage.</li>
-                      <li>Run an <strong>agent-driven delivery workflow</strong> end to end: an agent picks up the tracker issue with its acceptance criteria, works the change on an isolated branch, runs the test suite alongside agent-driven end-to-end checks against a running build, and opens a <strong>GitHub</strong> pull request carrying the issue context and test evidence. <strong>GitHub Actions</strong> runs the pipeline; a second model audits the diff against the original request before anything is reported done.</li>
+                      <li>Run a <strong>client-approved agent-driven delivery workflow</strong> end to end: an agent picks up the tracker issue with its acceptance criteria, works the change on an isolated branch, runs the test suite alongside agent-driven end-to-end checks against a running build, and opens a <strong>GitHub</strong> pull request carrying the issue context and test evidence. <strong>GitHub Actions</strong> runs the pipeline; a second model audits the diff against the original request before anything is reported done.</li>
           </ul>
           <div class="stack">
             <span>Kotlin</span><span>Coroutines / Flow</span><span>Media3 / ExoPlayer</span>
@@ -848,7 +863,7 @@
         <div class="role">
           <div class="role-head">
             <div class="company"><a href="https://www.clarotvmais.com.br/">Claro TV+</a></div>
-            <div class="dates">Apr 2024 — Dec 2024<span class="duration">· 9 mo</span></div>
+            <div class="dates">Apr 2024 — Dec 2024<span class="duration">· 8 mo</span></div>
           </div>
           <div class="role-meta">
             <span class="title">Android TV / Fire OS Engineer</span>
@@ -927,7 +942,7 @@
       <div class="role">
           <div class="role-head">
             <div class="company"><a href="https://freecast.com/">FreeCast, Inc.</a></div>
-            <div class="dates">Mar 2021 — May 2021<span class="duration">· 3 mo</span></div>
+            <div class="dates">Mar 2021 — May 2021<span class="duration">· 2 mo</span></div>
           </div>
           <div class="role-meta">
             <span class="title">Android / Android TV / Fire OS Engineer</span>
@@ -967,7 +982,7 @@
         <div class="role">
           <div class="role-head">
             <div class="company">Concrete · an Accenture Company</div>
-            <div class="dates">Dec 2016 — Oct 2018<span class="duration">· 1 yr 11 mo</span></div>
+            <div class="dates">Dec 2016 — Oct 2018<span class="duration">· 1 yr 10 mo</span></div>
           </div>
           <div class="role-meta">
             <span class="title">Jr. Android Engineer</span>
@@ -987,7 +1002,7 @@
         <div class="role">
           <div class="role-head">
             <div class="company">PraPagar (fintech)</div>
-            <div class="dates">Jun 2015 — Dec 2016<span class="duration">· 1 yr 7 mo</span></div>
+            <div class="dates">Jun 2015 — Dec 2016<span class="duration">· 1 yr 6 mo</span></div>
           </div>
           <div class="role-meta">
             <span class="title">Jr. Android Engineer</span>
@@ -1043,71 +1058,10 @@
 
 
 
-    <!-- ════════════ 03 AI-NATIVE ════════════ -->
-    <section>
-      <div class="section-head">
-        <span class="num">§ 03</span>
-        <h2>AI-Native Engineering Practice</h2>
-        <span class="kicker">Own fleet infrastructure · figures read from source, not READMEs</span>
-      </div>
-      <div class="projects">
-        <div class="project">
-          <h3>claude-dispatch — multi-provider LLM orchestration mesh</h3>
-          <p class="lede">A <strong>14,168-line</strong> Python dispatch daemon routing AI coding work across a seven-machine fleet, exposed to the orchestrating agent as <strong>15 MCP tools</strong>.</p>
-          <ul>
-            <li>Cost-aware routing across <strong>8 providers, 22 models, 6 tiers</strong>: one resolver applies rate-limit backoff, per-provider cooldowns, parallel-safety and required capabilities in order. Task type is inferred from the prompt; a complexity score forces a request up a tier or down to a free one.</li>
-            <li>Automatic escalation deliberately stops below the expensive tier — the orchestrator is never dispatched as a worker, and frontier tiers are unreachable from any automatic path.</li>
-            <li>Flat-rate providers are marked <strong>serial-only</strong>, so a parallel fan-out physically cannot select one and burn its concurrency limit.</li>
-            <li>Encrypted job transport keyed off the existing SSH identity — <strong>RSA-OAEP + AES-256-GCM</strong>, fresh key and nonce per message, clients authenticated by public-key fingerprint. No second PKI to operate.</li>
-            <li><strong>Five-source peer discovery</strong> (mDNS/Bonjour, config, Tailscale, peer exchange, gossip heartbeats) under an explicit precedence ladder; per-job token and cost extraction with live WebSocket output.</li>
-          </ul>
-        </div>
-        <div class="project">
-          <h3>Encrypted clipboard &amp; screenshot mesh</h3>
-          <p class="lede"><strong>52,097 lines, 1,624 tests.</strong> Hybrid AES-256-GCM + RSA-OAEP over the same SSH identity.</p>
-          <ul>
-            <li><strong>Four separate HMAC token families</strong> — clip, API, share, archive — scoped so a share token cannot be replayed to fetch a different artefact.</li>
-            <li>Peer-to-peer by default with a per-machine store; a seven-method access cascade falls from local HTTP through LAN, SMB, SCP, SFTP and Tailscale before any cloud path. Decryption is server-side: a recipient needs the token, never the key.</li>
-          </ul>
-        </div>
-        <div class="project">
-          <h3>Manifest-driven fleet deployment</h3>
-          <p class="lede">A supervisor running unattended across <strong>five machines</strong> under launchd, systemd and Task Scheduler, managing <strong>eleven applications</strong>.</p>
-          <ul>
-            <li>Each app ships a monotonic <code>VERSION.json</code> and a manifest declaring its install, launch and <code>/health</code> contract — deployment is a git push.</li>
-            <li>Supervision and auto-update run on deliberately decoupled intervals, so a crash restarts in seconds without waiting for the update poll. Cross-machine control is RSA-signed per request; failed self-updates roll back and queue a pending action.</li>
-          </ul>
-        </div>
-        <div class="project">
-          <h3>Instrumentation as a definition of done</h3>
-          <p class="lede">I authored a language-neutral <strong>trace-contract</strong> standard: the compile-time reference graph is the specification, and the runtime trace is reconciled against it automatically.</p>
-          <ul>
-            <li>Ships a written spec, JSON Schemas, a cross-language conformance oracle, a golden-case corpus, and an agent plugin whose hook blocks completion while the graph is stale. Three implementations across Python and TypeScript services, generating live trace volume in production.</li>
-            <li>Gate severity is scoped rather than uniform: agent-authored edits are blocked at the definition of done, while human commits degrade to a lint error by profile — never a unit-test failure.</li>
-          </ul>
-        </div>
-        <div class="project">
-          <h3>Closed-loop evaluation on real devices</h3>
-          <p class="lede">For TV clients I expose an on-device HTTP diagnostic surface — trace, state, screenshot, scripted navigation, and a named test-routine harness of <strong>149 routines</strong>.</p>
-          <ul>
-            <li>Each routine declares required parameters and returns a structured pass/fail with per-step detail, or HTTP 422 with a machine-readable reason. An agent drives the app, captures what the screen actually shows, reads the emitted events and evaluates against the contract — no human in the loop.</li>
-            <li>The same discipline applies to the harness: routines snapshot and restore application state on every exit path, and health probes are excluded from idle accounting — a monitoring call must not be mistaken for activity by the thing it monitors.</li>
-          </ul>
-        </div>
-        <div class="project">
-          <h3>Resource governance</h3>
-          <p class="lede">A GPU inference front door that verifies a model is fully resident after load, unloads it and fails with a typed error rather than allowing a silent spill to CPU — measured <strong>11.6 GB to 1.8 GB</strong> reclaimed.</p>
-          <ul>
-            <li>Long-running jobs publish liveness-stamped progress files, where stalled is judged by heartbeat age rather than process existence — a wedged process keeps a live PID.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
     <!-- ════════════ 03 PUBLISHED APPS ════════════ -->
     <section>
       <div class="section-head">
-        <span class="num">§ 04</span>
+        <span class="num">§ 03</span>
         <h2>Published Applications</h2>
         <span class="kicker">App Store · Google Play · Shipped under my own developer accounts</span>
       </div>
@@ -1142,7 +1096,50 @@
         </div>
     </section>
 
-    <!-- ════════════ 04 PROJECTS ════════════ -->
+        <!-- ════════════ AI-NATIVE ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 04</span>
+        <h2>AI-Native Engineering Practice</h2>
+        <span class="kicker">Built and run on my own machines and time · not in any client codebase</span>
+      </div>
+      <div class="projects">
+        <div class="project">
+          <h3>Multi-provider LLM orchestration</h3>
+          <p class="lede">A dispatch daemon routing coding work across my own seven-machine fleet, exposed to the orchestrating agent as <strong>15 MCP tools</strong>.</p>
+          <ul>
+            <li>Cost-aware routing over <strong>8 providers and 22 models in 6 tiers</strong>, applying rate-limit backoff, per-provider cooldowns and capability matching in order.</li>
+            <li>Flat-rate providers are marked <strong>serial-only</strong>, so a parallel fan-out cannot burn a subscription's concurrency limit.</li>
+            <li>Encrypted job transport keyed off the existing SSH identity — <strong>RSA-OAEP + AES-256-GCM</strong>, fresh key and nonce per message — with five-source peer discovery under an explicit precedence ladder.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Instrumentation as a definition of done</h3>
+          <p class="lede">I authored a language-neutral <strong>trace-contract</strong> standard: the compile-time reference graph is the specification, and the runtime trace is reconciled against it automatically.</p>
+          <ul>
+            <li>Ships a written spec, JSON Schemas, a cross-language conformance oracle, a golden-case corpus, and an agent plugin whose hook blocks completion while the graph is stale.</li>
+            <li>Gate severity is scoped — agent-authored edits block at the definition of done; human commits degrade to a lint error, never a test failure.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Closed-loop evaluation on my own TV app</h3>
+          <p class="lede">My personal tvOS and Android TV media player exposes an on-device HTTP diagnostic surface — trace, state, screenshot, scripted navigation, and <strong>149 named test routines</strong>.</p>
+          <ul>
+            <li>Each routine declares required parameters and returns a structured pass/fail or a machine-readable 422. An agent drives the app, captures what the screen actually shows, reads the emitted events and evaluates against the contract.</li>
+            <li>Compiled out of release builds.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Fleet operations</h3>
+          <p class="lede">Manifest-driven deployment across five personal machines under launchd, systemd and Task Scheduler.</p>
+          <ul>
+            <li>Each application declares its install, launch and health contract; deployment is a git push. Supervision and auto-update run on decoupled intervals so a crash restarts in seconds. Cross-machine control is RSA-signed per request.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<!-- ════════════ 04 PROJECTS ════════════ -->
     <section>
       <div class="section-head">
         <span class="num">§ 05</span>
@@ -1206,22 +1203,7 @@
         <div class="when">2013 — 2018</div>
       </div>
 
-      <div class="education-row">
-        <div>
-          <div class="school">Chiswick House School (Malta)</div>
-          <div class="degree">Primary education (English-medium).</div>
-        </div>
-        <div class="when">1997 — 1998</div>
-      </div>
-
-      <div class="education-row">
-        <div>
-          <div class="school">Orion Consulting · Rio de Janeiro</div>
-          <div class="degree">Java fundamentals — OOP, software design, code patterns and logic.</div>
-        </div>
-        <div class="when">2010</div>
-      </div>
-    </section>
+      </section>
 
     <section>
       <div class="section-head">
