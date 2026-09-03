@@ -1,7 +1,7 @@
 # Raphael Bernardo
 
-**Senior Android Engineer · Ex-Uber (contract)**
-Android TV, Fire OS and multi-brand OTT streaming — Media3/ExoPlayer, DRM, and native JNI/C++ (Uber Maps SDK).
+**Senior Android Engineer · Applied AI & Forward Deployed Engineer**
+Ex-Uber (contract) · Android TV, Fire OS and multi-brand OTT streaming — Media3/ExoPlayer, DRM, native JNI/C++, and agent-driven delivery.
 
 Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
 Languages: Portuguese (native), English (fluent), Spanish (intermediate)
