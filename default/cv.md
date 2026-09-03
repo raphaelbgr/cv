@@ -53,7 +53,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 
 - Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators.
 - Implemented 4K streaming via DASH / HLS protocols with multi-DRM.
-- Architected the data layer as a shared Kotlin Multiplatform (KMP) submodule consumed by Android, webOS and Tizen clients.
+- Contributed to the data layer as a shared Kotlin Multiplatform (KMP) submodule consumed by Android, webOS and Tizen clients.
 - Multi-module MVVM architecture; Media3 playback; analytics across Firebase + Google Analytics 4.
 
 **Stack:** Kotlin Multiplatform (KMP), Kotlin, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room, DataStore), Hilt, Media3, Coroutines / Flow, Firebase (Analytics, Crashlytics, FCM), Google Analytics 4, Picasso, Retrofit2, webOS, Tizen, JUnit, Espresso.

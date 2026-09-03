@@ -88,7 +88,8 @@
        ───────────────────────────────────────────────────────── */
     .masthead {
       display: grid;
-      grid-template-columns: 1fr auto;
+      /* fixed right column: a long contact line must never squeeze the name */
+      grid-template-columns: minmax(0, 1fr) 70mm;
       gap: 28px;
       align-items: end;
       padding-bottom: 18px;
@@ -162,6 +163,7 @@
 
     .contact {
       text-align: right;
+      overflow-wrap: anywhere;
       font-size: 9.4pt;
       color: var(--ink-2);
       line-height: 1.65;
@@ -184,6 +186,8 @@
 
     /* Masthead right column wrapper + Download PDF button */
     .masthead-right {
+      min-width: 0;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -644,19 +648,61 @@
        ───────────────────────────────────────────────────────── */
     @page {
       size: A4;
-      margin: 0;
+      /* real top/bottom margin on EVERY printed page, so continuation
+         pages do not start flush against the paper edge */
+      /* the browser owns the margin on EVERY sheet, so continuation
+         pages never start flush against the paper edge */
+      margin: 14mm 18mm 13mm;
     }
     @media print {
+      /* pagination: let content flow, never split a block */
+      .page { width: auto !important; max-width: none !important;
+              min-height: 0 !important; overflow: visible !important;
+              padding: 0 !important; page-break-after: auto; }
+      /* small blocks never split */
+      /* Chrome will not fragment a grid container: make it a block so the
+         cards can flow across a page break instead of moving as one lump */
+      .apps-grid { display: block !important; }
+      .app-card { display: flex !important; align-items: flex-start; gap: 14px;
+                  margin-bottom: 10px; break-inside: avoid; page-break-inside: avoid; }
+      .education-row { break-inside: avoid; page-break-inside: avoid; }
+      /* tall blocks may split, but never orphan a heading or a stray line */
+      .role, .project { break-inside: auto; page-break-inside: auto; orphans: 3; widows: 3; }
+      .role-head, .role-meta { break-after: avoid; page-break-after: avoid; }
+      .role ul, .project p { orphans: 3; widows: 3; }
+      .stack, .tags { break-inside: avoid; page-break-inside: avoid; }
+      /* tighten the reference table so it fits one sheet instead of orphaning
+         two rows onto a page of their own */
+      .skills-grid { gap: 6px 16px; }
+      .tags { gap: 3px 4px; }
+      .tags span { padding: 1px 6px 0; font-size: 7.4pt; }
+      .group { font-size: 7.4pt; padding-top: 2px; }
+      /* same grid-fragmentation problem in the reference table: rebuild the two
+         columns with inline-block so rows can flow across a page break */
+      .skills-grid { display: block !important; }
+      .skills-grid .group { display: inline-block; width: 118px; vertical-align: top;
+                            margin-bottom: 6px; }
+      .skills-grid .tags  { display: inline-flex; width: calc(100% - 126px);
+                            vertical-align: top; margin-bottom: 6px; }
+      /* the colophon alone was spilling onto a page of its own */
+      .colophon { margin-top: 14px; padding-top: 8px;
+                  break-inside: avoid; page-break-inside: avoid; }
+      section { margin-top: 14px; }
+      .skills-grid .group { break-inside: avoid; page-break-inside: avoid;
+                            break-after: avoid; page-break-after: avoid; }
+      .skills-grid .tags  { break-inside: avoid; page-break-inside: avoid; }
+      .section-head { break-after: avoid; page-break-after: avoid; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+
       html, body { background: var(--paper); }
       body { padding: 0; gap: 0; }
       .page {
         box-shadow: none;
         margin: 0;
-        page-break-after: always;
       }
       .page:last-child { page-break-after: auto; }
       a { color: inherit; }
-      .role, .project { break-inside: avoid; page-break-inside: avoid; }
+      .role, .project { break-inside: auto; page-break-inside: auto; orphans: 3; widows: 3; }
       .section-head { break-after: avoid; page-break-after: avoid; }
     }
 
@@ -666,10 +712,9 @@
        keep it scaled down rather than reflow into a mobile layout.
        ───────────────────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .page {
-        transform-origin: top center;
-        transform: scale(.94);
-      }
+      /* no transform in print: Chrome paginates the unscaled box but paints
+         the scaled one, so the breaks stop matching the sheets */
+      .page { transform: none !important; }
     }
 
     /* Published apps */
@@ -718,7 +763,7 @@
           <div><span class="label">Loc</span>Rio de Janeiro · GMT&minus;3</div>
           <div><span class="label">Cit</span>Brazilian + Portuguese (EU) dual citizen</div>
           <div><span class="label">Lang</span>Portuguese (native) · English (fluent) · Spanish (intermediate)</div>
-          <div><span class="label">Eng</span>Offshore B2B contractor from Brazil, invoicing through own company (CNPJ) · overlaps a full US Eastern day</div>
+          <div><span class="label">Eng</span>Offshore B2B contractor (own CNPJ) · full US Eastern overlap</div>
           <div><span class="label">Tel</span>+55 21 98885&#8209;6697</div>
           <div><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></div>
           <div><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></div>
@@ -761,13 +806,13 @@
             <span class="title">Senior Fire OS / Android TV Engineer</span>
             <span class="meta-sep">·</span>
             <span>via Nimble.LA · full remote</span>
-            <span class="badge primary">Full-time contract</span>
+            <span class="badge primary">Contract</span>
           </div>
           <ul>
-            <li>Architected an enterprise <strong>OTT streaming framework</strong> powering <strong>multiple TV station brands</strong> across Fire TV and Android TV using <strong>MVVM + Clean Architecture</strong> with a plugin-based integration layer for third-party services.</li>
+            <li>Contributed to the architecture of an enterprise <strong>OTT streaming framework</strong> powering <strong>multiple TV station brands</strong> across Fire TV and Android TV using <strong>MVVM + Clean Architecture</strong> with a plugin-based integration layer for third-party services.</li>
             <li>Built five specialised <strong>Media3 / ExoPlayer</strong> implementations covering VOD, live, and audio playback with HLS adaptive bitrate.</li>
             <li>Shipped DRM-protected playback (<strong>Widevine, PlayReady</strong>) with both server-side and client-side ad insertion.</li>
-            <li>Integrated the platform's analytics and audience-measurement stack (the platform's analytics and audience-measurement stack) under GDPR / CCPA compliance.</li>
+            <li>Integrated the platform's analytics and audience-measurement stack under <strong>GDPR / CCPA</strong> compliance.</li>
             <li>Delivered TV-optimised auth (device-based), entitlement &amp; flexible paywall, and zero-downtime feature rollouts across a large multi-brand flavor matrix via remote config; built Leanback TV UI with full d-pad navigation.</li>
             <li>Refactored callback chains to reactive Kotlin <strong>SharedFlow</strong>; resolved fragment-lifecycle leaks; wired <strong>Firebase Crashlytics + New Relic</strong> with JUnit, Mockk, Robolectric, Espresso coverage.</li>
           </ul>
@@ -809,7 +854,7 @@
           </div>
           <ul>
             <li>Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators; <strong>4K streaming</strong> via DASH / HLS with multi-DRM.</li>
-            <li>Architected the data layer as a shared <strong>Kotlin Multiplatform (KMP)</strong> submodule consumed by Android, webOS and Tizen clients.</li>
+            <li>Contributed to the data layer as a shared <strong>Kotlin Multiplatform (KMP)</strong> submodule consumed by Android, webOS and Tizen clients.</li>
             <li>Multi-module <strong>MVVM</strong> architecture; Media3 playback; analytics across Firebase + Google Analytics 4.</li>
           </ul>
           <div class="stack">
@@ -990,35 +1035,7 @@
         </div>
     </section>
 
-    <div class="colophon">
-      <span class="mark">R · B · G · R</span>
-      <span>Curriculum Vitæ · 2026</span>
-      <span>Continued →</span>
-    </div>
-  </article>
 
-  <!-- ════════════════════════════════════════════════════════
-       PAGE 2 — Projects · Education · Stack
-       ════════════════════════════════════════════════════════ -->
-  <article class="page">
-    <header class="masthead" style="grid-template-columns: 1fr auto;">
-      <div>
-        <div class="eyebrow">
-          <span class="vol">Vol. X</span>
-          <span class="sep"></span>
-          <span>Curriculum Vitæ</span>
-          <span class="sep"></span>
-          <span>Continued</span>
-        </div>
-        <h1 class="name" style="font-size: 30pt;">
-          <span class="family">Raphael Bernardo</span>
-        </h1>
-      </div>
-      <address class="contact">
-        <div><span class="label">Mail</span><a href="mailto:raphaelbgr@gmail.com">raphaelbgr@gmail.com</a></div>
-        <div><span class="label">Git</span><a href="https://github.com/raphaelbgr">github.com/raphaelbgr</a></div>
-      </address>
-    </header>
 
     <!-- ════════════ 03 PUBLISHED APPS ════════════ -->
     <section>
@@ -1038,20 +1055,20 @@
             </span>
           </a>
           <a class="app-card" href="https://play.google.com/store/apps/details?id=br.com.raphaelbgr.preoscerveja" target="_blank" rel="noopener">
-            <img class="app-icon" src="data:image/png;base64,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" alt="Preços Cerveja icon" width="56" height="56" />
+            <img class="app-icon" src="data:image/png;base64,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" alt="Beer Price Calculator icon" width="56" height="56" />
             <span class="app-text">
-              <span class="app-name">Preços Cerveja</span>
+              <span class="app-name">Beer Price Calculator</span>
               <span class="app-plat">Android — Google Play</span>
               <span class="app-desc">Compares beer prices by volume to find the best value per millilitre. Offline-first with local persistence and in-app billing.</span>
               <span class="app-stack">Kotlin, Jetpack Compose, Room, Play Billing</span>
             </span>
           </a>
           <a class="app-card" href="https://apps.apple.com/br/app/calculadora-de-cerveja/id6780996197" target="_blank" rel="noopener">
-            <img class="app-icon" src="data:image/png;base64,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" alt="Calculadora de Cerveja icon" width="56" height="56" />
+            <img class="app-icon" src="data:image/png;base64,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" alt="Beer Price Calculator icon" width="56" height="56" />
             <span class="app-text">
-              <span class="app-name">Calculadora de Cerveja</span>
+              <span class="app-name">Beer Price Calculator</span>
               <span class="app-plat">iPhone & iPad (iOS)</span>
-              <span class="app-desc">iOS counterpart of the price-per-volume comparison app, built natively in SwiftUI.</span>
+              <span class="app-desc">Native SwiftUI build of the same price-per-volume comparison app for iPhone and iPad.</span>
               <span class="app-stack">Swift, SwiftUI, iOS</span>
             </span>
           </a>
@@ -1251,20 +1268,15 @@
 
         <div class="group">Performance · Observability</div>
         <div class="tags">
-          <span>Android Profiler</span>
+          <span>Android Profiler</span><span>Firebase Crashlytics</span><span>New Relic</span><span>Playback lifecycle debugging</span><span>Memory-leak analysis</span>
         </div>
 
-        <div class="group">Compliance · Accessibility</div>
+        <div class="group">Compliance · Security</div>
         <div class="tags">
           <span>GDPR</span><span>CCPA</span>
-          <span>TalkBack · d-pad focus order</span>
+          <span>d-pad focus order</span>
           <span>DRM &amp; Content Security</span>
           <span>OAuth · SSO</span>
-        </div>
-
-        <div class="group">Languages (spoken)</div>
-        <div class="tags">
-          <span>Portuguese (native)</span><span>English (fluent)</span>
         </div>
       </div>
     </section>
