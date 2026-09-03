@@ -23,7 +23,7 @@ Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT 
 ### Nexstar Media Group, Inc. — Senior Fire OS / Android TV Engineer
 **Aug 2025 – Present · Contract via Nimble.LA · Full Remote**
 
-Multi-brand OTT streaming platform framework for Fire TV and Android TV, delivered as part of the platform engineering team.
+Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android/Fire OS contributor on the platform engineering team; the items below are the areas I worked in, not sole ownership of the platform.
 
 - Contributed to the architecture of an enterprise OTT streaming framework using MVVM + Clean Architecture, with a plugin-based integration system for third-party services.
 - Developed 5 specialised Media3 / ExoPlayer implementations for VOD, live streaming, and audio with HLS adaptive bitrate.
@@ -79,7 +79,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV, deliver
 **May 2021 – May 2022 (1 yr) · Contract via Matchpoint Solutions · Full Remote**
 
 - Worked on the Maps team SDK module developed with JNI / C++.
-- Contributed to Uber's open-source Android architecture framework (RIBs).
+- Worked in Uber's RIBs architecture inside the internal monorepo (not the public repository).
 - Collaborated on global-scale projects across a 10K+ engineer codebase.
 - Shipped to Uber Rider, Uber Eats and Uber Driver apps.
 
@@ -109,7 +109,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV, deliver
 ### Concrete (an Accenture Company) — Jr. Android Engineer
 **Dec 2016 – Oct 2018**
 
-- Built the Minha CVC travel app from scratch — reached 1M+ downloads on Google Play.
+- Built the Minha CVC travel app from its initial implementation as part of the agency team; the app passed 1M+ downloads on Google Play.
 - Implemented shop geolocation and store-locator guidance, increasing in-store visit volume.
 - Implemented a travel-package itinerary feature, reducing customer-service phone-call volume.
 - Implemented a travel-package virtual showcase, increasing customer flow to physical stores.
@@ -149,13 +149,40 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV, deliver
 ---
 
 
+## Published Applications
+
+Shipped under my own developer accounts on the App Store and Google Play.
+
+### Archive — Home Video Player — Apple TV (tvOS)
+https://apps.apple.com/br/app/archive-home-video-player/id6781049173
+
+Native SwiftUI tvOS client for a self-hosted media library: HLS playback, server-side transcoding, library browsing and resume across devices.
+
+**Stack:** Swift, SwiftUI, tvOS, AVFoundation, HLS.
+
+### Preços Cerveja — Android — Google Play
+https://play.google.com/store/apps/details?id=br.com.raphaelbgr.preoscerveja
+
+Compares beer prices by volume to find the best value per millilitre. Offline-first with local persistence and in-app billing.
+
+**Stack:** Kotlin, Jetpack Compose, Room, Play Billing.
+
+### Calculadora de Cerveja — iPhone & iPad (iOS)
+https://apps.apple.com/br/app/calculadora-de-cerveja/id6780996197
+
+iOS counterpart of the price-per-volume comparison app, built natively in SwiftUI.
+
+**Stack:** Swift, SwiftUI, iOS.
+
+---
+
 ## Selected Personal Projects
 
 ### claude-dispatch — multi-provider LLM orchestration mesh
 Fleet-mesh dispatch daemon (~14,000 LOC Python) that routes AI coding work across a seven-machine fleet. Cost-aware model router over 5 providers / 16 models on tiers T0-T3 with automatic escalation, per-provider rate-limit cooldowns with exponential backoff, and serial-only protection for subscription quotas. Peers auto-discover (mDNS/Bonjour, DNS, peer exchange) and gossip heartbeats for liveness; jobs arrive RSA-encrypted over REST and stream live output over WebSocket. Exposes 15 MCP tools to the orchestrating agent - fleet routing, parallel fan-out, iterative/tournament loops, job telemetry, provider state - and parses worker output into per-job token and cost accounting. Agent layer is planner / executor / evaluator / monitor, where the evaluator scores output against the brief and retries or escalates tiers instead of accepting it.
 **Stack:** Python, asyncio, HTTP/WebSocket, MCP, mDNS/Bonjour, Tailscale, RSA, SQLite, systemd / launchd / Task Scheduler.
 
-### Arquive
+### Arquive — backend for the shipped Archive tvOS app above
 Self-hosted personal media archive and streaming server. In-browser HLS playback with GPU-accelerated transcoding cache, IPTV (M3U + XMLTV EPG + recording), DLNA/UPnP for smart TVs, distributed GPU-fleet transcoding, FAISS-backed face recognition, local-AI captions via Ollama, plus a native Apple TV (SwiftUI) client.
 **Stack:** Python, React, HLS, GPU Transcoding, FAISS, InsightFace, Ollama (Qwen2.5-VL), DLNA, M3U/XMLTV, SwiftUI tvOS, JWT.
 
@@ -192,24 +219,24 @@ Java fundamentals: object-oriented programming, software design, code patterns a
 
 **Mobile / TV Platforms:** Android SDK, Android TV, Fire OS, webOS, Tizen, Android Leanback, Jetpack Compose, Compose for TV, Kotlin Multiplatform (KMP), NDK, JNI.
 
-**Streaming & Media:** OTT, CTV (Connected TV), Linear TV, VOD, Live Streaming, Media3 / ExoPlayer, MediaCodec, HLS, LL-HLS, DASH, CMAF, H.264 / AVC, HEVC / H.265, HDR10+, AAC, Hardware-accelerated decoding, Widevine DRM, PlayReady, Google IMA SDK, Server-Side Ad Insertion (SSAI), Client-Side Ad Insertion (CSAI), GStreamer, HDHomeRun, AirTV, Alticast, PDAQ.
+**Streaming & Media:** OTT, CTV (Connected TV), Linear TV, VOD, Live Streaming, Media3 / ExoPlayer, HLS, DASH, H.264 / AVC, HEVC / H.265, Widevine DRM, PlayReady, Google IMA SDK, Server-Side Ad Insertion (SSAI), Client-Side Ad Insertion (CSAI), GStreamer, HDHomeRun, AirTV, Alticast, PDAQ.
 
 **Architecture:** MVVM, MVI, Unidirectional Data Flow (UDF), Clean Architecture, Use Case, Multi-module, Plugin-based integration, RIBs, MVP.
 
 **Jetpack & Reactive:** Coroutines, Flow, SharedFlow, StateFlow, LiveData, ViewModel, Navigation, Room, DataStore, Hilt, Dagger 2, RxJava2.
 
-**Cloud & Backend:** Firebase (Analytics, Crashlytics, FCM, Auth, Firestore, Remote Config, In-App Messaging), AWS (SQS, SNS, Storage), Supabase, PostgreSQL, REST APIs, Retrofit2, Moshi.
+**Cloud & Backend:** Firebase (Analytics, Crashlytics, FCM, Auth, Firestore, Remote Config, In-App Messaging), AWS (SQS, SNS, Storage), REST APIs, Retrofit2, Moshi.
 
 **Analytics:** Adobe Analytics, Adobe Marketing SDK, mParticle, Nielsen DCR, ComScore, Permutive, BlueConic, New Relic, Mux Analytics, Mixpanel, Google Analytics 4.
 
-**Testing & Build:** JUnit, Mockk, Robolectric, Espresso, Paparazzi (screenshot testing), Turbine (Flow testing), Selenium, TestNG, Buck, Gradle, CMake, Jenkins CI/CD, Flipper.
+**Testing & Build:** JUnit, Mockk, Robolectric, Espresso, Selenium, TestNG, Buck, Gradle, CMake, Jenkins CI/CD, Flipper.
 
 **AI & Agentic Systems:** LLM orchestration, multi-provider model routing and tier escalation, agent architectures (planner / executor / evaluator / monitor), MCP (Model Context Protocol) server and tool design, Retrieval-Augmented Generation (RAG), vector databases, knowledge graphs with community detection, prompt engineering, evaluation and scoring loops, local inference (Ollama, LM Studio, Qwen2.5-VL), faster-whisper / CTranslate2 speech-to-text, FAISS, InsightFace, Stable Diffusion / ComfyUI, Agno agents, GPU fleet scheduling and VRAM accounting (CUDA + Apple Metal).
 
-**AI-Assisted Development:** Claude Code, Cursor, GitHub Copilot — daily use in production delivery: code generation, large-scale refactors, test authoring, and agentic workflows across build and release tooling.
+**AI-Assisted Development:** Experienced with AI coding assistants and agentic build/release tooling, applied within each client's tooling policy.
 
-**Performance & Observability:** Quality of Experience (QoE), Time-to-First-Frame (TTFF), Rebuffering rate, Startup-time optimisation, Systrace, Perfetto, Android Profiler.
+**Performance & Observability:** Android Profiler, Firebase Crashlytics, New Relic, playback lifecycle and memory-leak debugging.
 
-**Compliance, Security & Accessibility:** GDPR, CCPA, WCAG 2.2, TalkBack, d-pad focus order, DRM, Content Security, OAuth, SSO.
+**Compliance & Security:** GDPR, CCPA, DRM, Content Security, OAuth, SSO, d-pad focus order.
 
 **Spoken Languages:** Portuguese (native), English (fluent), Spanish (intermediate).

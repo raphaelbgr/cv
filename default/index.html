@@ -671,6 +671,21 @@
         transform: scale(.94);
       }
     }
+
+    /* Published apps */
+    .apps-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 22px; }
+    .app-card {
+      display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: start;
+      padding: 12px 14px; border: 1px solid var(--rule); background: var(--paper);
+      text-decoration: none; color: inherit; break-inside: avoid;
+    }
+    .app-icon { width: 56px; height: 56px; border-radius: 12px; display: block; }
+    .app-text { display: block; }
+    .app-name { display: block; font-family: var(--display); font-weight: 600; font-size: 13.5pt; color: var(--ink); }
+    .app-plat { display: block; font-family: var(--mono); font-size: 8pt; letter-spacing: .16em;
+                text-transform: uppercase; color: var(--accent); margin: 2px 0 5px; }
+    .app-desc { display: block; font-size: 9.5pt; line-height: 1.45; color: var(--ink-2); }
+    .app-stack { display: block; font-family: var(--mono); font-size: 8pt; color: var(--mute); margin-top: 5px; }
   </style>
 </head>
 <body>
@@ -907,7 +922,7 @@
             <span class="title">Jr. Android Engineer</span>
           </div>
           <ul>
-            <li>Built the <strong>Minha CVC</strong> travel app from scratch — <strong>1M+ downloads</strong>; shop geolocation directing customers to physical stores; itinerary feature reducing customer-service call volume.</li>
+            <li>Built the <strong>Minha CVC</strong> travel app from its initial implementation as part of the agency team — <strong>1M+ downloads</strong>; shop geolocation directing customers to physical stores; itinerary feature reducing customer-service call volume.</li>
             <li>Worked on <strong>Getnet</strong>; migrated MVP to MVVM; introduced RxJava2 and LiveData.</li>
           </ul>
           <div class="stack">
@@ -1005,17 +1020,55 @@
       </address>
     </header>
 
-    <!-- ════════════ 03 PROJECTS ════════════ -->
+    <!-- ════════════ 03 PUBLISHED APPS ════════════ -->
     <section>
       <div class="section-head">
         <span class="num">§ 03</span>
+        <h2>Published Applications</h2>
+        <span class="kicker">App Store · Google Play · Shipped under my own developer accounts</span>
+      </div>
+        <div class="apps-grid">
+          <a class="app-card" href="https://apps.apple.com/br/app/archive-home-video-player/id6781049173" target="_blank" rel="noopener">
+            <img class="app-icon" src="data:image/png;base64,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" alt="Archive — Home Video Player icon" width="56" height="56" />
+            <span class="app-text">
+              <span class="app-name">Archive — Home Video Player</span>
+              <span class="app-plat">Apple TV (tvOS)</span>
+              <span class="app-desc">Native SwiftUI tvOS client for a self-hosted media library: HLS playback, server-side transcoding, library browsing and resume across devices.</span>
+              <span class="app-stack">Swift, SwiftUI, tvOS, AVFoundation, HLS</span>
+            </span>
+          </a>
+          <a class="app-card" href="https://play.google.com/store/apps/details?id=br.com.raphaelbgr.preoscerveja" target="_blank" rel="noopener">
+            <img class="app-icon" src="data:image/png;base64,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" alt="Preços Cerveja icon" width="56" height="56" />
+            <span class="app-text">
+              <span class="app-name">Preços Cerveja</span>
+              <span class="app-plat">Android — Google Play</span>
+              <span class="app-desc">Compares beer prices by volume to find the best value per millilitre. Offline-first with local persistence and in-app billing.</span>
+              <span class="app-stack">Kotlin, Jetpack Compose, Room, Play Billing</span>
+            </span>
+          </a>
+          <a class="app-card" href="https://apps.apple.com/br/app/calculadora-de-cerveja/id6780996197" target="_blank" rel="noopener">
+            <img class="app-icon" src="data:image/png;base64,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" alt="Calculadora de Cerveja icon" width="56" height="56" />
+            <span class="app-text">
+              <span class="app-name">Calculadora de Cerveja</span>
+              <span class="app-plat">iPhone & iPad (iOS)</span>
+              <span class="app-desc">iOS counterpart of the price-per-volume comparison app, built natively in SwiftUI.</span>
+              <span class="app-stack">Swift, SwiftUI, iOS</span>
+            </span>
+          </a>
+        </div>
+    </section>
+
+    <!-- ════════════ 04 PROJECTS ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 04</span>
         <h2>Selected Personal Work</h2>
         <span class="kicker">Independent · Open Source · Research</span>
       </div>
 
       <div class="projects">
         <div class="project">
-          <h3>Arquive</h3>
+          <h3>Arquive <span style="font-weight:400;font-size:.72em;color:var(--mute)">— backend for the Archive tvOS app above</span></h3>
           <p class="lede">
             Self-hosted personal media archive &amp; streaming server. In-browser
             <strong>HLS playback</strong> with GPU-accelerated transcoding cache,
@@ -1093,7 +1146,7 @@
     <!-- ════════════ 04 EDUCATION ════════════ -->
     <section>
       <div class="section-head">
-        <span class="num">§ 04</span>
+        <span class="num">§ 05</span>
         <h2>Education</h2>
         <span class="kicker">Formal · Continuing</span>
       </div>
@@ -1126,7 +1179,7 @@
     <!-- ════════════ 05 STACK ════════════ -->
     <section>
       <div class="section-head">
-        <span class="num">§ 05</span>
+        <span class="num">§ 06</span>
         <h2>Technical Stack</h2>
         <span class="kicker">Reference · ATS Index</span>
       </div>
@@ -1153,11 +1206,7 @@
         <div class="tags">
           <span>OTT</span><span>CTV (Connected TV)</span>
           <span>Linear TV</span><span>VOD</span><span>Live Streaming</span>
-          <span>Media3 / ExoPlayer</span><span>MediaCodec</span>
-          <span>HLS</span><span>LL-HLS</span><span>DASH</span><span>CMAF</span>
-          <span>H.264 / AVC</span><span>HEVC / H.265</span><span>HDR10+</span><span>AAC</span>
-          <span>Hardware-accelerated decoding</span>
-          <span>Widevine</span><span>PlayReady</span>
+          <span>Media3 / ExoPlayer</span><span>HLS</span><span>DASH</span><span>H.264 / AVC</span><span>HEVC / H.265</span><span>Widevine</span><span>PlayReady</span>
           <span>Google IMA SDK</span><span>SSAI · CSAI</span>
           <span>GStreamer</span><span>HDHomeRun · AirTV · Alticast · PDAQ</span>
         </div>
@@ -1182,7 +1231,6 @@
         <div class="tags">
           <span>Firebase (Analytics · Crashlytics · FCM · Auth · Firestore · Remote Config · IAM)</span>
           <span>AWS (SQS · SNS · Storage)</span>
-          <span>Supabase</span><span>PostgreSQL</span>
           <span>REST APIs</span><span>Retrofit2 · Moshi</span>
         </div>
 
@@ -1196,26 +1244,20 @@
         <div class="group">Testing · Build</div>
         <div class="tags">
           <span>JUnit</span><span>Mockk</span><span>Robolectric</span>
-          <span>Espresso</span><span>Paparazzi (screenshot)</span>
-          <span>Turbine (Flow testing)</span><span>Selenium · TestNG</span>
+          <span>Espresso</span>          <span>Selenium · TestNG</span>
           <span>Buck</span><span>Gradle</span><span>CMake</span>
           <span>Jenkins CI/CD</span><span>Flipper</span>
         </div>
 
         <div class="group">Performance · Observability</div>
         <div class="tags">
-          <span>Quality of Experience (QoE)</span>
-          <span>Time-to-First-Frame (TTFF)</span>
-          <span>Rebuffering rate</span>
-          <span>Startup-time optimisation</span>
-          <span>Systrace</span><span>Perfetto</span>
           <span>Android Profiler</span>
         </div>
 
         <div class="group">Compliance · Accessibility</div>
         <div class="tags">
           <span>GDPR</span><span>CCPA</span>
-          <span>WCAG 2.2</span><span>TalkBack · d-pad focus order</span>
+          <span>TalkBack · d-pad focus order</span>
           <span>DRM &amp; Content Security</span>
           <span>OAuth · SSO</span>
         </div>
