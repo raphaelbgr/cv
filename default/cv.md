@@ -1,10 +1,11 @@
 # Raphael Bernardo
 
-**Senior Android Engineer · Ex-Uber**
-Architect of a streaming framework powering 50+ TV brands — native (JNI/C++), TV & multi-DRM expertise.
+**Senior Android Engineer · Ex-Uber (contract)**
+Android TV, Fire OS and multi-brand OTT streaming — Media3/ExoPlayer, DRM, and native JNI/C++ (Uber Maps SDK).
 
 Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
 Languages: Portuguese (native), English (fluent), Spanish (intermediate)
+Engaged as an offshore B2B contractor from Brazil, invoicing through my own company (CNPJ). Overlaps a full US Eastern working day.
 +55 (21) 98885-6697 · raphaelbgr@gmail.com
 github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
@@ -12,7 +13,7 @@ github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
 ## Summary
 
-Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT / CTV streaming frameworks, and broadcast-grade DRM. Ten-plus years shipping production apps across Android, Android TV, Fire OS, webOS and Tizen — including an OTT streaming framework powering 50+ broadcast brands and 4K multi-DRM playback (Widevine, PlayReady, FairPlay).
+Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT / CTV streaming frameworks, and broadcast-grade DRM. Ten-plus years shipping production apps across Android, Android TV, Fire OS, webOS and Tizen — including a multi-brand OTT streaming framework and 4K DRM-protected playback (Widevine, PlayReady).
 
 
 ---
@@ -22,21 +23,21 @@ Senior Android engineer with cross-stack reach — Uber Maps SDK (JNI/C++), OTT 
 ### Nexstar Media Group, Inc. — Senior Fire OS / Android TV Engineer
 **Aug 2025 – Present · Contract via Nimble.LA · Full Remote**
 
-OTT streaming platform framework powering 50+ TV station brands for Nexstar Digital across Fire TV and Android TV.
+Multi-brand OTT streaming platform framework for Fire TV and Android TV, delivered as part of the platform engineering team.
 
-- Architected an enterprise OTT streaming framework with MVVM + Clean Architecture and a plugin-based integration system for third-party services.
+- Contributed to the architecture of an enterprise OTT streaming framework using MVVM + Clean Architecture, with a plugin-based integration system for third-party services.
 - Developed 5 specialised Media3 / ExoPlayer implementations for VOD, live streaming, and audio with HLS adaptive bitrate.
-- Implemented DRM-protected content streaming (Widevine, PlayReady, FairPlay) with both server-side and client-side ad insertion.
-- Integrated 12+ analytics platforms (Adobe Analytics, mParticle, Nielsen DCR, ComScore, Permutive, BlueConic) with GDPR / CCPA compliance.
-- Built device-based passwordless, magic-link, and QR-code authentication flows optimised for TV.
+- Implemented DRM-protected content streaming (Widevine, PlayReady) with both server-side and client-side ad insertion.
+- Integrated the platform's analytics and audience-measurement stack under GDPR / CCPA compliance.
+- Built TV-optimised device-based authentication flows.
 - Implemented subscription management with entitlement checking and flexible paywall integration.
-- Developed a remote configuration system enabling zero-downtime feature rollouts across 50+ product flavors.
+- Worked on remote configuration enabling zero-downtime feature rollouts across a large multi-brand flavor matrix.
 - Created TV-optimised UI using the Android Leanback framework with d-pad / remote-control navigation.
 - Refactored callback patterns to reactive event-driven architecture using Kotlin SharedFlow; resolved background-audio playback issues during navigation transitions and lifecycle-aware leaks in fragment navigation.
 - Integrated Firebase Crashlytics and New Relic for crash reporting and performance monitoring.
 - Wrote unit and UI tests using JUnit, Mockk, Robolectric, and Espresso.
 
-**Stack:** Kotlin, Kotlin Coroutines / Flow, Media3 / ExoPlayer, Dagger 2, Retrofit2, Moshi, Glide, Android Leanback, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room), Firebase (Analytics, Crashlytics, FCM), Google IMA SDK, Adobe Marketing SDK, mParticle, Nielsen DCR, ComScore, New Relic, Mux Analytics, JUnit, Mockk, Espresso.
+**Stack:** Kotlin, Kotlin Coroutines / Flow, Media3 / ExoPlayer, Dagger 2, Retrofit2, Moshi, Glide, Android Leanback, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room), Firebase (Analytics, Crashlytics, FCM), Google IMA SDK, New Relic, JUnit, Mockk, Espresso.
 
 ---
 
@@ -48,7 +49,7 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 ---
 
 ### Claro TV+ — Android TV / Fire OS Engineer
-**Apr 2024 – Dec 2024 (9 mo) · Contract · Full Remote**
+**Apr 2024 – Dec 2024 (9 mo) · Contract via Global Hitss · Full Remote**
 
 - Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators.
 - Implemented 4K streaming via DASH / HLS protocols with multi-DRM.
@@ -129,17 +130,8 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 
 ---
 
-### FASOLTI · Fábrica de Soluções em TI — Test Developer (Internship)
-**Sep 2014 – Jan 2015 (5 mo)**
-
-- Documented and implemented automated test cases in Selenium with TestNG.
-
-**Stack:** Selenium, TestNG, REST APIs, Git, OOP, Agile.
-
----
-
 ### IBM Brasil — Software Engineering Intern
-**Jun 2014 – Dec 2014 (6 mo) · Rio de Janeiro · while pursuing B.S. at Instituto Infnet**
+**Jun 2014 – Dec 2014 (7 mo) · Rio de Janeiro · while pursuing B.S. at Instituto Infnet**
 
 - Wrote SQL queries against IBM DB2 in support of contract and sales teams; produced reporting spreadsheets and Hyperion-based BI artefacts.
 - Documented internal processes via SharePoint; first professional exposure to enterprise databases, REST APIs, and Agile workflows.
@@ -147,6 +139,15 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 **Stack:** IBM DB2, SQL, IBM Hyperion, SharePoint, Python, REST APIs, Git, OOP, Agile Methodologies.
 
 ---
+### FASOLTI · Fábrica de Soluções em TI — Test Developer (Internship)
+**Jan 2014 – May 2014 (5 mo)**
+
+- Documented and implemented automated test cases in Selenium with TestNG.
+
+**Stack:** Selenium, TestNG, REST APIs, Git, OOP, Agile.
+
+---
+
 
 ## Selected Personal Projects
 
@@ -154,7 +155,7 @@ OTT streaming platform framework powering 50+ TV station brands for Nexstar Digi
 Fleet-mesh dispatch daemon (~14,000 LOC Python) that routes AI coding work across a seven-machine fleet. Cost-aware model router over 5 providers / 16 models on tiers T0-T3 with automatic escalation, per-provider rate-limit cooldowns with exponential backoff, and serial-only protection for subscription quotas. Peers auto-discover (mDNS/Bonjour, DNS, peer exchange) and gossip heartbeats for liveness; jobs arrive RSA-encrypted over REST and stream live output over WebSocket. Exposes 15 MCP tools to the orchestrating agent - fleet routing, parallel fan-out, iterative/tournament loops, job telemetry, provider state - and parses worker output into per-job token and cost accounting. Agent layer is planner / executor / evaluator / monitor, where the evaluator scores output against the brief and retries or escalates tiers instead of accepting it.
 **Stack:** Python, asyncio, HTTP/WebSocket, MCP, mDNS/Bonjour, Tailscale, RSA, SQLite, systemd / launchd / Task Scheduler.
 
-### Arquive — github.com/raphaelbgr/arquive
+### Arquive
 Self-hosted personal media archive and streaming server. In-browser HLS playback with GPU-accelerated transcoding cache, IPTV (M3U + XMLTV EPG + recording), DLNA/UPnP for smart TVs, distributed GPU-fleet transcoding, FAISS-backed face recognition, local-AI captions via Ollama, plus a native Apple TV (SwiftUI) client.
 **Stack:** Python, React, HLS, GPU Transcoding, FAISS, InsightFace, Ollama (Qwen2.5-VL), DLNA, M3U/XMLTV, SwiftUI tvOS, JWT.
 
@@ -162,11 +163,11 @@ Self-hosted personal media archive and streaming server. In-browser HLS playback
 Android music player with three pluggable design systems users switch at runtime — Material You (Google), Neon Wave (synthwave), and Organic Flow (botanical). One Compose codebase, three radically different visual identities — design-system theming treated as a first-class architectural concern.
 **Stack:** Kotlin, Jetpack Compose, Material 3, MVI, Coroutines / Flow, Hilt.
 
-### Socials Automator — github.com/raphaelbgr/Socials-Automator
+### Socials Automator
 End-to-end Instagram carousel generator — AI writes the captions, AI generates the images, then auto-posts. Live at @ai.for.mortals. Runs on 100% local AI (LM Studio + ComfyUI) at zero cost, with cloud fallback (Z.AI, OpenAI, Groq, Gemini, fal.ai). Smart slide-count selection, post-history awareness, scheduled loop mode.
 **Stack:** Python, LM Studio, ComfyUI, Stable Diffusion, Z.AI / OpenAI / Groq / Gemini APIs, Instagram Graph API, Cloudinary.
 
-### Infinite Research — github.com/raphaelbgr/IntiniteResearch
+### Infinite Research
 Autonomous AI research system that refines documents through infinite self-learning iterations. Agno agents orchestrate 1–10 parallel DuckDuckGo searches per iteration; each pass evolves search terms and patches identified gaps. Local LLMs via LMStudio, vector-DB RAG over prior refinements, SQLite versioning, graceful shutdown.
 **Stack:** Python, Agno Agents, LMStudio (local LLM), RAG / Vector DB, DuckDuckGo Search, SQLite.
 
@@ -177,8 +178,8 @@ Autonomous AI research system that refines documents through infinite self-learn
 **Instituto Infnet — Rio de Janeiro · 2013 – 2018**
 B.S. in Computer Engineering. Software development, mathematical modelling for software, operating-systems and computer-hardware architecture.
 
-**Chiswick House School — Malta · 1997 – 2005**
-K-12 Primary and Secondary Education (High School Diploma).
+**Chiswick House School — Malta · 1997 – 1998**
+Primary education (English-medium).
 
 **Orion Consulting — Rio de Janeiro · 2010**
 Java fundamentals: object-oriented programming, software design, code patterns and logic.
@@ -191,7 +192,7 @@ Java fundamentals: object-oriented programming, software design, code patterns a
 
 **Mobile / TV Platforms:** Android SDK, Android TV, Fire OS, webOS, Tizen, Android Leanback, Jetpack Compose, Compose for TV, Kotlin Multiplatform (KMP), NDK, JNI.
 
-**Streaming & Media:** OTT, CTV (Connected TV), Linear TV, VOD, Live Streaming, Media3 / ExoPlayer, MediaCodec, HLS, LL-HLS, DASH, CMAF, H.264 / AVC, HEVC / H.265, HDR10+, AAC, Hardware-accelerated decoding, Widevine DRM, PlayReady, FairPlay, Google IMA SDK, Server-Side Ad Insertion (SSAI), Client-Side Ad Insertion (CSAI), GStreamer, HDHomeRun, AirTV, Alticast, PDAQ.
+**Streaming & Media:** OTT, CTV (Connected TV), Linear TV, VOD, Live Streaming, Media3 / ExoPlayer, MediaCodec, HLS, LL-HLS, DASH, CMAF, H.264 / AVC, HEVC / H.265, HDR10+, AAC, Hardware-accelerated decoding, Widevine DRM, PlayReady, Google IMA SDK, Server-Side Ad Insertion (SSAI), Client-Side Ad Insertion (CSAI), GStreamer, HDHomeRun, AirTV, Alticast, PDAQ.
 
 **Architecture:** MVVM, MVI, Unidirectional Data Flow (UDF), Clean Architecture, Use Case, Multi-module, Plugin-based integration, RIBs, MVP.
 
@@ -211,4 +212,4 @@ Java fundamentals: object-oriented programming, software design, code patterns a
 
 **Compliance, Security & Accessibility:** GDPR, CCPA, WCAG 2.2, TalkBack, d-pad focus order, DRM, Content Security, OAuth, SSO.
 
-**Spoken Languages:** Portuguese (native), English (fluent).
+**Spoken Languages:** Portuguese (native), English (fluent), Spanish (intermediate).
