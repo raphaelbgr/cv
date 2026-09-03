@@ -36,6 +36,11 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 - Refactored callback patterns to reactive event-driven architecture using Kotlin SharedFlow; resolved background-audio playback issues during navigation transitions and lifecycle-aware leaks in fragment navigation.
 - Integrated Firebase Crashlytics and New Relic for crash reporting and performance monitoring.
 - Wrote unit and UI tests using JUnit, Mockk, Robolectric, and Espresso.
+- Run an agent-driven delivery workflow end to end: an agent picks up the tracker issue with its
+  acceptance criteria, works the change on an isolated branch, runs the test suite alongside
+  agent-driven end-to-end checks against a running build, and opens a GitHub pull request
+  carrying the issue context and test evidence. GitHub Actions runs the pipeline; a second model
+  audits the diff against the original request before anything is reported done.
 
 **Stack:** Kotlin, Kotlin Coroutines / Flow, Media3 / ExoPlayer, Dagger 2, Retrofit2, Moshi, Glide, Android Leanback, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room), Firebase (Analytics, Crashlytics, FCM), Google IMA SDK, New Relic, JUnit, Mockk, Espresso.
 
@@ -45,6 +50,8 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 **Dec 2024 – Jul 2025 (8 mo) · Contract · Full Remote**
 
 - Returned to the Select TV and FreeCast Watch products across Android, Android TV, Fire OS, webOS and Tizen through to the end of the engagement.
+- Used coding agents as a primary development method on migration and refactor work, with
+  automated verification in CI before review.
 
 ---
 
@@ -55,6 +62,8 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 - Implemented 4K streaming via DASH / HLS protocols with multi-DRM.
 - Contributed to the data layer as a shared Kotlin Multiplatform (KMP) submodule consumed by Android, webOS and Tizen clients.
 - Multi-module MVVM architecture; Media3 playback; analytics across Firebase + Google Analytics 4.
+- Applied AI-assisted development across the greenfield build — code generation and review over
+  the Kotlin Multiplatform and multi-module layers.
 
 **Stack:** Kotlin Multiplatform (KMP), Kotlin, Jetpack (Navigation, ViewModel, LiveData, StateFlow, SharedFlow, Room, DataStore), Hilt, Media3, Coroutines / Flow, Firebase (Analytics, Crashlytics, FCM), Google Analytics 4, Picasso, Retrofit2, webOS, Tizen, JUnit, Espresso.
 
@@ -70,6 +79,7 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 - Integrated OTA tuner platforms (HDHomeRun, AirTV, Alticast, PDAQ) with GStreamer-based media pipelines for secure live broadcast over HLS / DASH.
 - Owned DRM, EPG, tuner orchestration, transcoding, and multi-device streaming end-to-end.
 - Shipped on Google Play (Select TV Android, FreeCast Watch) and Amazon Appstore (FreeCast Watch Fire OS).
+- Used AI-assisted development on the Java-to-Kotlin migration and on widening test coverage.
 
 **Stack:** Kotlin, Jetpack Compose, Hilt, Coroutines / Flow, Media3, Room, DataStore, Retrofit2, Picasso, Firebase Analytics, Firebase Crashlytics, Firebase Cloud Messaging, Mixpanel, webOS, Tizen, HDHomeRun, AirTV, Alticast, PDAQ, GStreamer, Widevine DRM, JUnit, Espresso.
 
@@ -149,6 +159,109 @@ Multi-brand OTT streaming platform framework for Fire TV and Android TV. Android
 ---
 
 
+## AI-Native Engineering Practice
+
+I run my own multi-machine agent infrastructure and treat instrumentation, evaluation and
+completion criteria as engineering artefacts rather than process. Figures below are from the
+source, not from README files.
+
+### claude-dispatch — multi-provider LLM orchestration mesh
+
+A 14,168-line Python dispatch daemon that routes AI coding work across a seven-machine fleet,
+exposed to the orchestrating agent as 15 MCP tools.
+
+- **Cost-aware routing across 8 providers, 22 models and 6 tiers.** A single resolver applies
+  rate-limit backoff, per-provider cooldowns, parallel-safety and required model capabilities
+  in order, then scores candidates by task tags. Task type is inferred from the prompt; a
+  complexity score can force a request up a tier or down to a free one.
+- **Automatic escalation deliberately stops below the expensive tier.** Anthropic models are
+  never dispatched as workers — the orchestrator is not a worker. Frontier tiers are opt-in and
+  unreachable from any automatic path.
+- **Subscription-quota protection.** Flat-rate providers are marked serial-only, so a parallel
+  fan-out physically cannot select one and burn its concurrency limit.
+- **Encrypted job transport keyed off existing SSH identity** — RSA-OAEP(SHA-256) + AES-256-GCM,
+  fresh symmetric key and nonce per message, clients authenticated by public-key fingerprint
+  against `authorized_keys`. No second PKI to operate.
+- **Five-source peer discovery** — mDNS/Bonjour, config, Tailscale DNS, peer exchange and gossip
+  heartbeats, merged under an explicit precedence ladder. Running now with six peers, two of
+  which were learned by heartbeat with no configuration entry.
+- **Per-job token and cost extraction** parsed from worker output, with counterfactual accounting
+  and a live WebSocket stream of worker output.
+
+### Encrypted clipboard and screenshot mesh across the fleet
+
+52,097 lines with 1,624 tests. Hybrid AES-256-GCM + RSA-OAEP over the same SSH identity, and
+**four separate HMAC token families** — clip, API, share and archive — deliberately scoped so a
+share token cannot be replayed to fetch a different artefact. Peer-to-peer by default with a
+per-machine store; a seven-method access cascade falls from local HTTP through LAN, SMB, SCP,
+SFTP and Tailscale before any cloud path. Decryption is server-side, so a recipient needs the
+token but never the key.
+
+### Manifest-driven fleet deployment
+
+A supervisor running unattended across five machines under launchd, systemd and Task Scheduler,
+managing eleven applications. Each app ships a monotonic `VERSION.json` and a manifest declaring
+its install, launch and `/health` contract; deployment is a git push. Supervision and
+auto-update run on deliberately decoupled intervals so a crash is restarted in seconds without
+waiting for the update poll. Cross-machine control is RSA-signed per request. Failed self-updates
+roll back and queue a pending action for the next session.
+
+### Instrumentation as a definition of done
+
+I authored a language-neutral **trace-contract** standard: a compile-time reference graph is the
+specification, and the runtime trace is reconciled against it automatically. It ships a written
+spec, JSON Schemas, a cross-language conformance oracle, a golden-case corpus, and an agent
+plugin whose hook blocks completion while the graph is stale. Three independent implementations
+exist across Python and TypeScript services, generating live trace volume in production.
+
+Gate severity is scoped rather than uniform: agent-authored edits are blocked at the definition
+of done, while human commits degrade to a lint error by profile — never a unit-test failure.
+
+### Closed-loop evaluation on real devices
+
+For TV clients I expose an on-device HTTP diagnostic surface — trace, state, screenshot, scripted
+navigation and a named test-routine harness of **149 routines**, each declaring required
+parameters and returning a structured pass/fail with per-step detail, or HTTP 422 with a
+machine-readable reason. This lets an agent drive the application, capture what the screen
+actually shows, read the emitted events, and evaluate the result against the contract without a
+human in the loop.
+
+The same discipline applies to the harness itself: routines snapshot and restore application
+state on every exit path, and health probes are excluded from idle accounting — a monitoring
+call must not be mistaken for activity by the thing it monitors.
+
+### Agent workflows from tracker issue to pull request
+
+The shape I build for: an agent picks up a **Jira** issue with its acceptance criteria, works the
+change on an isolated branch, runs the project's test suite together with agent-driven end-to-end
+checks against a running build, and delivers a **GitHub** pull request that already carries the
+issue context — summary, acceptance criteria and test evidence — so review starts from the intent
+rather than from the diff.
+
+The reusable pieces are the ones that make it safe: one isolated worktree per task so parallel
+agents cannot collide, a second model auditing the resulting diff against the original request
+before anything is reported, and machine-checked acceptance gates — each an executable command
+with an expected result — that must pass with recorded evidence before work counts as done.
+
+### Resource governance
+
+A GPU inference front door that verifies a model is fully resident after load, unloads it and
+fails with a typed error rather than allowing a silent spill to CPU; measured 11.6 GB to 1.8 GB
+of reclaimed VRAM. Long-running jobs publish liveness-stamped progress files, where stalled is
+judged by heartbeat age rather than process existence — a wedged process keeps a live PID.
+
+### Autonomous work intake
+
+A chat-driven gateway that accepts a request, runs a headless coding agent against the target
+repository, then dispatches a second model to audit the resulting diff against the original
+request and raise an alert when the two disagree. It reports and commits; it never silently
+reverts.
+
+**Stack:** Python, asyncio, MCP, Jira, GitHub, git worktrees, HTTP/WebSocket, RSA-OAEP + AES-256-GCM, mDNS/Bonjour, Tailscale,
+SQLite, systemd / launchd / Task Scheduler, Kotlin, Ktor, CUDA, Metal.
+
+---
+
 ## Published Applications
 
 Shipped under my own developer accounts on the App Store and Google Play.
@@ -178,10 +291,6 @@ iOS counterpart of the price-per-volume comparison app, built natively in SwiftU
 
 ## Selected Personal Projects
 
-### claude-dispatch — multi-provider LLM orchestration mesh
-Fleet-mesh dispatch daemon (~14,000 LOC Python) that routes AI coding work across a seven-machine fleet. Cost-aware model router over 5 providers / 16 models on tiers T0-T3 with automatic escalation, per-provider rate-limit cooldowns with exponential backoff, and serial-only protection for subscription quotas. Peers auto-discover (mDNS/Bonjour, DNS, peer exchange) and gossip heartbeats for liveness; jobs arrive RSA-encrypted over REST and stream live output over WebSocket. Exposes 15 MCP tools to the orchestrating agent - fleet routing, parallel fan-out, iterative/tournament loops, job telemetry, provider state - and parses worker output into per-job token and cost accounting. Agent layer is planner / executor / evaluator / monitor, where the evaluator scores output against the brief and retries or escalates tiers instead of accepting it.
-**Stack:** Python, asyncio, HTTP/WebSocket, MCP, mDNS/Bonjour, Tailscale, RSA, SQLite, systemd / launchd / Task Scheduler.
-
 ### Arquive — backend for the shipped Archive tvOS app above
 Self-hosted personal media archive and streaming server. In-browser HLS playback with GPU-accelerated transcoding cache, IPTV (M3U + XMLTV EPG + recording), DLNA/UPnP for smart TVs, distributed GPU-fleet transcoding, FAISS-backed face recognition, local-AI captions via Ollama, plus a native Apple TV (SwiftUI) client.
 **Stack:** Python, React, HLS, GPU Transcoding, FAISS, InsightFace, Ollama (Qwen2.5-VL), DLNA, M3U/XMLTV, SwiftUI tvOS, JWT.
@@ -189,14 +298,6 @@ Self-hosted personal media archive and streaming server. In-browser HLS playback
 ### DynamicMusicApp — github.com/raphaelbgr/dynamic-music-app-showcase
 Android music player with three pluggable design systems users switch at runtime — Material You (Google), Neon Wave (synthwave), and Organic Flow (botanical). One Compose codebase, three radically different visual identities — design-system theming treated as a first-class architectural concern.
 **Stack:** Kotlin, Jetpack Compose, Material 3, MVI, Coroutines / Flow, Hilt.
-
-### Socials Automator
-End-to-end Instagram carousel generator — AI writes the captions, AI generates the images, then auto-posts. Live at @ai.for.mortals. Runs on 100% local AI (LM Studio + ComfyUI) at zero cost, with cloud fallback (Z.AI, OpenAI, Groq, Gemini, fal.ai). Smart slide-count selection, post-history awareness, scheduled loop mode.
-**Stack:** Python, LM Studio, ComfyUI, Stable Diffusion, Z.AI / OpenAI / Groq / Gemini APIs, Instagram Graph API, Cloudinary.
-
-### Infinite Research
-Autonomous AI research system that refines documents through infinite self-learning iterations. Agno agents orchestrate 1–10 parallel DuckDuckGo searches per iteration; each pass evolves search terms and patches identified gaps. Local LLMs via LMStudio, vector-DB RAG over prior refinements, SQLite versioning, graceful shutdown.
-**Stack:** Python, Agno Agents, LMStudio (local LLM), RAG / Vector DB, DuckDuckGo Search, SQLite.
 
 ---
 

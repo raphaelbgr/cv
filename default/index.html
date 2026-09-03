@@ -673,17 +673,19 @@
       .stack, .tags { break-inside: avoid; page-break-inside: avoid; }
       /* tighten the reference table so it fits one sheet instead of orphaning
          two rows onto a page of their own */
-      .skills-grid { gap: 6px 16px; }
-      .tags { gap: 3px 4px; }
-      .tags span { padding: 1px 6px 0; font-size: 7.4pt; }
-      .group { font-size: 7.4pt; padding-top: 2px; }
+      .skills-grid { gap: 3px 12px; }
+      .tags { gap: 2px 3px; }
+      .tags span { padding: 0 5px; font-size: 6.9pt; line-height: 1.5; }
+      .group { font-size: 6.9pt; padding-top: 1px; letter-spacing: .14em; }
+      .skills-grid .group { width: 96px; margin-bottom: 3px; }
+      .skills-grid .tags  { width: calc(100% - 102px); margin-bottom: 3px; }
       /* same grid-fragmentation problem in the reference table: rebuild the two
          columns with inline-block so rows can flow across a page break */
       .skills-grid { display: block !important; }
-      .skills-grid .group { display: inline-block; width: 118px; vertical-align: top;
-                            margin-bottom: 6px; }
-      .skills-grid .tags  { display: inline-flex; width: calc(100% - 126px);
-                            vertical-align: top; margin-bottom: 6px; }
+      .skills-grid .group { display: inline-block; width: 96px; vertical-align: top;
+                            margin-bottom: 3px; }
+      .skills-grid .tags  { display: inline-flex; width: calc(100% - 102px);
+                            vertical-align: top; margin-bottom: 3px; }
       /* the colophon alone was spilling onto a page of its own */
       .colophon { margin-top: 14px; padding-top: 8px;
                   break-inside: avoid; page-break-inside: avoid; }
@@ -815,6 +817,7 @@
             <li>Integrated the platform's analytics and audience-measurement stack under <strong>GDPR / CCPA</strong> compliance.</li>
             <li>Delivered TV-optimised auth (device-based), entitlement &amp; flexible paywall, and zero-downtime feature rollouts across a large multi-brand flavor matrix via remote config; built Leanback TV UI with full d-pad navigation.</li>
             <li>Refactored callback chains to reactive Kotlin <strong>SharedFlow</strong>; resolved fragment-lifecycle leaks; wired <strong>Firebase Crashlytics + New Relic</strong> with JUnit, Mockk, Robolectric, Espresso coverage.</li>
+                      <li>Run an <strong>agent-driven delivery workflow</strong> end to end: an agent picks up the tracker issue with its acceptance criteria, works the change on an isolated branch, runs the test suite alongside agent-driven end-to-end checks against a running build, and opens a <strong>GitHub</strong> pull request carrying the issue context and test evidence. <strong>GitHub Actions</strong> runs the pipeline; a second model audits the diff against the original request before anything is reported done.</li>
           </ul>
           <div class="stack">
             <span>Kotlin</span><span>Coroutines / Flow</span><span>Media3 / ExoPlayer</span>
@@ -838,6 +841,7 @@
           </div>
           <ul>
             <li>Returned to the Select TV and FreeCast Watch products across Android, Android TV, Fire OS, webOS and Tizen through to the end of the engagement.</li>
+                      <li>Used <strong>coding agents as a primary development method</strong> on migration and refactor work, with automated verification in CI before review.</li>
           </ul>
         </div>
 
@@ -856,6 +860,7 @@
             <li>Greenfield Android TV / Fire OS app for one of Brazil's largest pay-TV operators; <strong>4K streaming</strong> via DASH / HLS with multi-DRM.</li>
             <li>Contributed to the data layer as a shared <strong>Kotlin Multiplatform (KMP)</strong> submodule consumed by Android, webOS and Tizen clients.</li>
             <li>Multi-module <strong>MVVM</strong> architecture; Media3 playback; analytics across Firebase + Google Analytics 4.</li>
+                      <li>Applied <strong>AI-assisted development</strong> across the greenfield build — code generation and review over the Kotlin Multiplatform and multi-module layers.</li>
           </ul>
           <div class="stack">
             <span>Kotlin Multiplatform (KMP)</span><span>Kotlin</span>
@@ -883,6 +888,7 @@
             <li>Integrated <strong>OTA tuner platforms</strong> (HDHomeRun, AirTV, Alticast, PDAQ) with GStreamer-based media pipelines for secure live broadcast over HLS / DASH.</li>
             <li>Owned <strong>DRM, EPG, tuner orchestration, transcoding</strong>, and multi-device streaming end-to-end.</li>
             <li>Shipped on Google Play (<em>Select TV Android</em>, <em>FreeCast Watch</em>) and Amazon (<em>FreeCast Watch Fire OS</em>).</li>
+                      <li>Used <strong>AI-assisted development</strong> on the Java-to-Kotlin migration and on widening test coverage.</li>
           </ul>
           <div class="stack">
             <span>Kotlin</span><span>Jetpack Compose</span><span>Hilt</span>
@@ -1037,10 +1043,71 @@
 
 
 
-    <!-- ════════════ 03 PUBLISHED APPS ════════════ -->
+    <!-- ════════════ 03 AI-NATIVE ════════════ -->
     <section>
       <div class="section-head">
         <span class="num">§ 03</span>
+        <h2>AI-Native Engineering Practice</h2>
+        <span class="kicker">Own fleet infrastructure · figures read from source, not READMEs</span>
+      </div>
+      <div class="projects">
+        <div class="project">
+          <h3>claude-dispatch — multi-provider LLM orchestration mesh</h3>
+          <p class="lede">A <strong>14,168-line</strong> Python dispatch daemon routing AI coding work across a seven-machine fleet, exposed to the orchestrating agent as <strong>15 MCP tools</strong>.</p>
+          <ul>
+            <li>Cost-aware routing across <strong>8 providers, 22 models, 6 tiers</strong>: one resolver applies rate-limit backoff, per-provider cooldowns, parallel-safety and required capabilities in order. Task type is inferred from the prompt; a complexity score forces a request up a tier or down to a free one.</li>
+            <li>Automatic escalation deliberately stops below the expensive tier — the orchestrator is never dispatched as a worker, and frontier tiers are unreachable from any automatic path.</li>
+            <li>Flat-rate providers are marked <strong>serial-only</strong>, so a parallel fan-out physically cannot select one and burn its concurrency limit.</li>
+            <li>Encrypted job transport keyed off the existing SSH identity — <strong>RSA-OAEP + AES-256-GCM</strong>, fresh key and nonce per message, clients authenticated by public-key fingerprint. No second PKI to operate.</li>
+            <li><strong>Five-source peer discovery</strong> (mDNS/Bonjour, config, Tailscale, peer exchange, gossip heartbeats) under an explicit precedence ladder; per-job token and cost extraction with live WebSocket output.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Encrypted clipboard &amp; screenshot mesh</h3>
+          <p class="lede"><strong>52,097 lines, 1,624 tests.</strong> Hybrid AES-256-GCM + RSA-OAEP over the same SSH identity.</p>
+          <ul>
+            <li><strong>Four separate HMAC token families</strong> — clip, API, share, archive — scoped so a share token cannot be replayed to fetch a different artefact.</li>
+            <li>Peer-to-peer by default with a per-machine store; a seven-method access cascade falls from local HTTP through LAN, SMB, SCP, SFTP and Tailscale before any cloud path. Decryption is server-side: a recipient needs the token, never the key.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Manifest-driven fleet deployment</h3>
+          <p class="lede">A supervisor running unattended across <strong>five machines</strong> under launchd, systemd and Task Scheduler, managing <strong>eleven applications</strong>.</p>
+          <ul>
+            <li>Each app ships a monotonic <code>VERSION.json</code> and a manifest declaring its install, launch and <code>/health</code> contract — deployment is a git push.</li>
+            <li>Supervision and auto-update run on deliberately decoupled intervals, so a crash restarts in seconds without waiting for the update poll. Cross-machine control is RSA-signed per request; failed self-updates roll back and queue a pending action.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Instrumentation as a definition of done</h3>
+          <p class="lede">I authored a language-neutral <strong>trace-contract</strong> standard: the compile-time reference graph is the specification, and the runtime trace is reconciled against it automatically.</p>
+          <ul>
+            <li>Ships a written spec, JSON Schemas, a cross-language conformance oracle, a golden-case corpus, and an agent plugin whose hook blocks completion while the graph is stale. Three implementations across Python and TypeScript services, generating live trace volume in production.</li>
+            <li>Gate severity is scoped rather than uniform: agent-authored edits are blocked at the definition of done, while human commits degrade to a lint error by profile — never a unit-test failure.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Closed-loop evaluation on real devices</h3>
+          <p class="lede">For TV clients I expose an on-device HTTP diagnostic surface — trace, state, screenshot, scripted navigation, and a named test-routine harness of <strong>149 routines</strong>.</p>
+          <ul>
+            <li>Each routine declares required parameters and returns a structured pass/fail with per-step detail, or HTTP 422 with a machine-readable reason. An agent drives the app, captures what the screen actually shows, reads the emitted events and evaluates against the contract — no human in the loop.</li>
+            <li>The same discipline applies to the harness: routines snapshot and restore application state on every exit path, and health probes are excluded from idle accounting — a monitoring call must not be mistaken for activity by the thing it monitors.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <h3>Resource governance</h3>
+          <p class="lede">A GPU inference front door that verifies a model is fully resident after load, unloads it and fails with a typed error rather than allowing a silent spill to CPU — measured <strong>11.6 GB to 1.8 GB</strong> reclaimed.</p>
+          <ul>
+            <li>Long-running jobs publish liveness-stamped progress files, where stalled is judged by heartbeat age rather than process existence — a wedged process keeps a live PID.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ 03 PUBLISHED APPS ════════════ -->
+    <section>
+      <div class="section-head">
+        <span class="num">§ 04</span>
         <h2>Published Applications</h2>
         <span class="kicker">App Store · Google Play · Shipped under my own developer accounts</span>
       </div>
@@ -1078,7 +1145,7 @@
     <!-- ════════════ 04 PROJECTS ════════════ -->
     <section>
       <div class="section-head">
-        <span class="num">§ 04</span>
+        <span class="num">§ 05</span>
         <h2>Selected Personal Work</h2>
         <span class="kicker">Independent · Open Source · Research</span>
       </div>
@@ -1120,50 +1187,13 @@
           </div>
         </div>
 
-        <div class="project">
-          <h3>Socials Automator</h3>
-          <p class="lede">
-            End-to-end Instagram carousel generator — AI writes the captions, AI
-            generates the images, then auto-posts. Live at
-            <a href="https://www.instagram.com/ai.for.mortals/">@ai.for.mortals</a>.
-            Runs on <strong>100% local AI</strong> (LM Studio + ComfyUI) at zero cost,
-            with cloud fallback (Z.AI, OpenAI, Groq, Gemini, fal.ai). Smart slide-count
-            selection, post-history awareness, scheduled loop mode.
-          </p>
-          <div class="stack">
-            <span>Python</span><span>LM Studio</span>
-            <span>ComfyUI · Stable Diffusion</span>
-            <span>Z.AI · OpenAI · Groq · Gemini</span>
-            <span>Instagram Graph API</span>
-            <span>Cloudinary</span>
-          </div>
         </div>
-
-        <div class="project">
-          <h3>Infinite Research</h3>
-          <p class="lede">
-            Autonomous AI research system that refines documents through infinite
-            self-learning iterations. <strong>Agno agents</strong> orchestrate
-            <strong>1–10 parallel DuckDuckGo searches</strong> per iteration; each
-            pass evolves search terms and patches identified gaps. Local LLMs via
-            <strong>LMStudio</strong>, vector-DB RAG over prior refinements, SQLite
-            versioning, graceful shutdown.
-          </p>
-          <div class="stack">
-            <span>Python</span><span>Agno Agents</span>
-            <span>LMStudio (local LLM)</span>
-            <span>RAG · Vector DB</span>
-            <span>DuckDuckGo Search</span>
-            <span>SQLite</span>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ════════════ 04 EDUCATION ════════════ -->
     <section>
       <div class="section-head">
-        <span class="num">§ 05</span>
+        <span class="num">§ 06</span>
         <h2>Education</h2>
         <span class="kicker">Formal · Continuing</span>
       </div>
@@ -1193,90 +1223,47 @@
       </div>
     </section>
 
-    <!-- ════════════ 05 STACK ════════════ -->
     <section>
       <div class="section-head">
-        <span class="num">§ 06</span>
+        <span class="num">§ 07</span>
         <h2>Technical Stack</h2>
-        <span class="kicker">Reference · ATS Index</span>
+        <span class="kicker">Core competencies</span>
       </div>
 
       <div class="skills-grid">
-        <div class="group">Languages</div>
+        <div class="group">Core</div>
         <div class="tags">
-          <span>Kotlin</span><span>Java</span><span>C++</span><span>TypeScript</span>
-          <span>JavaScript</span><span>Python</span><span>Groovy</span>
-          <span>SQL</span><span>PHP (Laravel)</span>
+          <span>Android</span><span>Applied AI / LLM</span><span>Kotlin</span>
         </div>
 
-        <div class="group">Mobile / TV</div>
+        <div class="group">Android · TV</div>
         <div class="tags">
-          <span>Android SDK</span><span>Android TV</span><span>Fire OS</span>
-          <span>webOS</span><span>Tizen</span>
-          <span>Android Leanback</span>
-          <span>Jetpack Compose</span><span>Compose for TV</span>
-          <span>Kotlin Multiplatform (KMP)</span>
-          <span>NDK · JNI</span>
+          <span>Android SDK</span><span>Android TV</span><span>Fire OS</span><span>webOS · Tizen</span>
+          <span>Jetpack Compose</span><span>Leanback</span><span>Kotlin Multiplatform</span><span>NDK · JNI</span>
         </div>
 
-        <div class="group">Streaming · Media</div>
+        <div class="group">Streaming</div>
         <div class="tags">
-          <span>OTT</span><span>CTV (Connected TV)</span>
-          <span>Linear TV</span><span>VOD</span><span>Live Streaming</span>
-          <span>Media3 / ExoPlayer</span><span>HLS</span><span>DASH</span><span>H.264 / AVC</span><span>HEVC / H.265</span><span>Widevine</span><span>PlayReady</span>
-          <span>Google IMA SDK</span><span>SSAI · CSAI</span>
-          <span>GStreamer</span><span>HDHomeRun · AirTV · Alticast · PDAQ</span>
+          <span>Media3 / ExoPlayer</span><span>HLS · DASH</span><span>Live · VOD</span>
+          <span>Widevine · PlayReady</span><span>SSAI · CSAI</span><span>Google IMA</span><span>GStreamer</span>
         </div>
 
         <div class="group">Architecture</div>
         <div class="tags">
-          <span>MVVM</span><span>MVI</span><span>Unidirectional Data Flow</span>
-          <span>Clean Architecture</span><span>Use Case</span>
-          <span>Multi-module</span><span>RIBs</span><span>MVP</span>
-          <span>Plugin-based integration</span>
+          <span>MVVM · MVI</span><span>Clean Architecture</span><span>Use Case</span>
+          <span>Multi-module</span><span>Coroutines · Flow</span><span>Hilt · Dagger 2</span>
         </div>
 
-        <div class="group">Jetpack · Reactive</div>
+        <div class="group">AI systems</div>
         <div class="tags">
-          <span>Coroutines · Flow</span><span>SharedFlow · StateFlow</span>
-          <span>LiveData</span><span>ViewModel · Navigation</span>
-          <span>Room · DataStore</span><span>Hilt · Dagger 2</span>
-          <span>RxJava2</span>
+          <span>Agent orchestration</span><span>MCP</span><span>RAG · vector search</span>
+          <span>Evaluation harnesses</span><span>Local inference</span><span>Python</span>
         </div>
 
-        <div class="group">Cloud · Backend</div>
+        <div class="group">Delivery</div>
         <div class="tags">
-          <span>Firebase (Analytics · Crashlytics · FCM · Auth · Firestore · Remote Config · IAM)</span>
-          <span>AWS (SQS · SNS · Storage)</span>
-          <span>REST APIs</span><span>Retrofit2 · Moshi</span>
-        </div>
-
-        <div class="group">Analytics</div>
-        <div class="tags">
-          <span>Adobe Analytics</span><span>Nielsen DCR</span><span>Permutive</span><span>BlueConic</span>
-          <span>New Relic</span><span>Mux</span><span>Mixpanel</span>
-          <span>Google Analytics 4</span>
-        </div>
-
-        <div class="group">Testing · Build</div>
-        <div class="tags">
-          <span>JUnit</span><span>Mockk</span><span>Robolectric</span>
-          <span>Espresso</span>          <span>Selenium · TestNG</span>
-          <span>Buck</span><span>Gradle</span><span>CMake</span>
-          <span>Jenkins CI/CD</span><span>Flipper</span>
-        </div>
-
-        <div class="group">Performance · Observability</div>
-        <div class="tags">
-          <span>Android Profiler</span><span>Firebase Crashlytics</span><span>New Relic</span><span>Playback lifecycle debugging</span><span>Memory-leak analysis</span>
-        </div>
-
-        <div class="group">Compliance · Security</div>
-        <div class="tags">
-          <span>GDPR</span><span>CCPA</span>
-          <span>d-pad focus order</span>
-          <span>DRM &amp; Content Security</span>
-          <span>OAuth · SSO</span>
+          <span>JUnit · Mockk · Robolectric · Espresso</span><span>Gradle</span>
+          <span>GitHub Actions</span><span>Jenkins</span><span>Jira</span>
         </div>
       </div>
     </section>
