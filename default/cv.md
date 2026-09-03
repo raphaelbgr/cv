@@ -5,7 +5,8 @@ Android TV, Fire OS and multi-brand OTT streaming — Media3/ExoPlayer, DRM, and
 
 Rio de Janeiro, Brazil (GMT-3) · Brazilian + Portuguese (EU) dual citizen
 Languages: Portuguese (native), English (fluent), Spanish (intermediate)
-Engaged as an offshore B2B contractor from Brazil, invoicing through my own company (CNPJ). Overlaps a full US Eastern working day.
+Open to a new engagement; my current contract can be transitioned with notice.
+Offshore B2B contractor from Brazil, invoicing through my own company (CNPJ). Overlaps a full US Eastern working day.
 +55 (21) 98885-6697 · raphaelbgr@gmail.com
 github.com/raphaelbgr · linkedin.com/in/raphaelbgr
 
